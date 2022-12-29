@@ -1,0 +1,16 @@
+.next-link {
+    text-decoration: none;
+    display: block;
+    font-size: 2rem;
+    border: none;
+    background-color: #F43F5E;
+    color: #fff;
+    padding: 1rem 2rem;
+    width: 100%;
+    border-radius: 50px;
+}
+
+.next-link:hover {
+    cursor: pointer;
+    background-color: #BE123C;
+}
