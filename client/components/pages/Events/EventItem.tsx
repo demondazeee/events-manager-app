@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styled from "styled-components";
 import { EventsDataBody } from "../../../hooks/useEvents";
 import { LI } from "../../elements/Lists";
@@ -49,7 +50,7 @@ const EventItem = ({data}: EventItemProps) => {
                         </ImageContainer>
                         <EventItemFooter>
                             <p>{date.toDateString()}</p>
-                            <p>Posted By: {ownerName}</p>
+                            <p>Posted By: <Link href={`/profile/${ownerName}`}>{ownerName}</Link></p>
                         </EventItemFooter>
                     </EventContainer>
                 </Card>
