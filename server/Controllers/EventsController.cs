@@ -27,31 +27,19 @@ public class EventsController : ControllerBase
         this.userRepo = userRepo;
     }
 
+
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<EventsDto>>> GetEvents()
+    public async Task<ActionResult<IEnumerable<EventsDto>>> GetEvents(
+        string? name,
+        string? userId
+    )
     {
-        var events = await eventRepo.GetEvents();
+        var events = await eventRepo.GetEvents(name, userId);
 
         var mapped = mapper.Map<IEnumerable<EventsDto>>(events);
         return Ok(mapped);
     }
 
-    [HttpGet("{eventId}")]
-    public async Task<ActionResult<EventsDto>> GetEvents(
-        string eventId
-    )
-    {
-
-        var events = await eventRepo.GetEvent(new Guid(eventId));
-
-        if(events == null)
-        {
-            return NotFound();
-        }
-
-        var result = mapper.Map<EventsDto>(events);
-        return Ok(result);
-    }
 
     [Authorize(Roles = "Admin, Manager")]
     [HttpPost]
