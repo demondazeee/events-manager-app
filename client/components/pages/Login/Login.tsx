@@ -10,7 +10,8 @@ const LoginFormContainer = styled.div`
     min-width: 300px;
     background-color: #fff;
     padding: 3rem;
-    border-radius: 5px;
+    border-radius: 3px;
+    border: 2.5px solid #000;
 
     & > *:not(:last-child) {
         margin-bottom: 25px;
