@@ -3,7 +3,7 @@ import {ReactNode} from "react";
 import styled from "styled-components";
 import NavBar from "../NavBar/NavBar";
 
-export const PageContainer = styled.div `
+export const ContainerLayout = styled.div `
     max-width: 1200px;
     height: 100%;
     width: 100%;
@@ -24,9 +24,9 @@ const Container = ({children} : PageContainerProp) => {
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
             <NavBar/>
-            <PageContainer>
+            <ContainerLayout>
                 <main> {children} </main>
-            </PageContainer>
+            </ContainerLayout>
         </>
     )
 }
