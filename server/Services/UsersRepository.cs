@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using WebAPI.DBContext;
 using WebAPI.Entities;
 using static WebAPI.Entities.Users;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebAPI.Services;
 
@@ -12,6 +13,7 @@ public class UsersRepository : RepositoryBase<Users>, IUsersRepository
 {
     private IConfiguration config;
     private IHttpContextAccessor http;
+    private readonly Db _context;
     public UsersRepository(
         Db context,
         IConfiguration config,
@@ -20,7 +22,10 @@ public class UsersRepository : RepositoryBase<Users>, IUsersRepository
     {
         this.http = http;
         this.config = config;
+        this._context = context;
     }
+
+
     public string? GetAuthUser() {
          var result = string.Empty;
          if (http.HttpContext != null)
