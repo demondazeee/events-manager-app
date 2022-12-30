@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next"
+import { PageContainer } from "../components/layouts/PageContainer"
 import EventList from "../components/pages/Events/EventList"
 import { EventsDataBody } from "../hooks/useEvents"
 
@@ -29,7 +30,9 @@ const Home = ({data}: DataProp) => {
   
   return (
     <>
-      <EventList eventData={data} />
+      <PageContainer>
+        <EventList eventData={data} />
+      </PageContainer>
     </>
   )
 }
