@@ -1,14 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-public class AuthAdminDto
-{
-    [Required]
-    [MinLength(4)]
-    [MaxLength(12)]
-    public string Username { get; set; } = string.Empty;
+namespace WebAPI.Models;
 
-    [Required]
-    [MinLength(4)]
-    [MaxLength(12)]
-    public string Password { get; set; } = string.Empty;
+public class AuthAdminDto : AuthBaseDto
+{
+
 }
