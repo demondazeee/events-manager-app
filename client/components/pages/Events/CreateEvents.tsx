@@ -6,6 +6,11 @@ import { PrimaryButton } from "../../elements/Buttons"
 import { Input, TextArea } from "../../elements/Inputs"
 import { Card } from "../../layouts/Card"
 
+
+const CreateEventContainer = styled(Card)`
+    height: 100%;
+`
+
 const CreateEventForm = styled.form`
     display: flex;
     flex-direction: column;
@@ -55,7 +60,7 @@ const CreateEvents = () =>{
     
     return (
         <>
-            <Card>
+            <CreateEventContainer>
                 <CreateEventForm>
                     <Input placeholder="Enter Event Title.." 
                     onChange={(e) => {dispatchFn({val: e.target.value, type: "TITLE_INPUT" })}}
@@ -72,7 +77,7 @@ const CreateEvents = () =>{
                         <PrimaryButton>Cancel</PrimaryButton>
                     </CreateEventActionContainer>
                 </CreateEventForm>
-            </Card>
+            </CreateEventContainer>
         </>
     )
 }
