@@ -1,10 +1,15 @@
 import { useState } from "react"
+import { EventsDataBody } from "./useEvents"
 import { useFetch } from "./useFetch"
 
-export type UserDataBody = {
-    id: string,
-    username: string,
+export interface UserDataBody  {
+    id: string
+    username: string
     accessToken: string
+}
+
+export interface UserDataWithEvents extends UserDataBody {
+    events: EventsDataBody[]
 }
 
 export type LoginMemberBody = {
@@ -29,7 +34,7 @@ export const useAuth = () => {
     const loginUser = async ({username, password}: LoginMemberBody) => {
         setIsLoading(true)
         const res = await fetchUrl({
-            paths: "auth/login",
+            paths: "user/member/login",
             method: "POST",
             fetchOptions: {
                 body: JSON.stringify({
@@ -57,7 +62,7 @@ export const useAuth = () => {
 
     const refreshToken = async () => {
         const res = await fetchUrl({
-            paths: "auth/refresh",
+            paths: "user/refresh",
             method: "POST"
         })
 
@@ -80,8 +85,8 @@ export const useAuth = () => {
     const logoutUser = async () => {
         setIsLoading(true)
         const res = await fetchUrl({
-            paths: "auth/logout",
-            method: "POST"
+            paths: "user/logout",
+            method: "POST",
         })
 
         if(res == undefined){
