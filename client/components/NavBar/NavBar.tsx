@@ -6,15 +6,15 @@ import { authContext } from "../../store/AuthContext";
 import { LinkButton, NextLink } from "../elements/Buttons";
 import { LI, UL } from "../elements/Lists";
 import { H2 } from "../elements/Typography";
-import { PageContainer } from "../layouts/Container";
+import { ContainerLayout } from "../layouts/Container";
 
 const HeaderContainer = styled.header`
     position: sticky;
     width: 100%;
     top: 0;
-    background-color: #F43F5E;
-    color: #fff;
     padding: 1rem;
+    background-color: #fff;
+    border-bottom: 1px solid #000;
 `
 
 const Nav = styled.nav`
@@ -40,17 +40,19 @@ const AuthContainer = styled.div``
 const AuthMenuLists = styled(UL)`
     display: flex;
     gap: 2rem;
+    align-items: center;
 `
 
 
 
 const NavBar = () => {
     const auth = useContext(authContext)
+
     const router = useRouter()
     return (
         <>
             <HeaderContainer>
-                <PageContainer>
+                <ContainerLayout>
                     <Nav>
                         <LogoContainer onClick={() => { router.push('/')}}>
                             <H2>Events</H2>
@@ -80,7 +82,7 @@ const NavBar = () => {
                                 auth?.isLoggedIn ? 
                                 <>
                                     <LI>
-                                        <LinkButton>Profile</LinkButton>
+                                        <NextLink path={`/profile/${auth?.userData.username}`}>Profile</NextLink>
                                     </LI>
                                     <LI>
                                         <LinkButton onClick={(e)=> {
@@ -102,7 +104,7 @@ const NavBar = () => {
                             </AuthMenuLists>
                         </AuthContainer>
                     </Nav>
-                </PageContainer>
+                </ContainerLayout>
             </HeaderContainer>
         </>
     )
