@@ -1,6 +1,5 @@
 import { useContext, useReducer } from "react"
 import styled from "styled-components"
-import { useEvents } from "../../../hooks/useEvents"
 import { eventContext } from "../../../store/EventContext"
 import { PrimaryButton } from "../../elements/Buttons"
 import { Input, TextArea } from "../../elements/Inputs"
@@ -69,12 +68,16 @@ const CreateEvents = () =>{
                      onChange={(e) => {dispatchFn({val: e.target.value, type: "DESC_INPUT" })}}
                     />
                     <CreateEventActionContainer>
-                        <PrimaryButton onClick={(e) =>{ 
+                        <PrimaryButton onClick={(e) =>{
+                        e.preventDefault() 
                         event?.createEvent({
                             title: state.title,
                             description: state.description
                         })}}>Submit Post</PrimaryButton>
-                        <PrimaryButton>Cancel</PrimaryButton>
+                        <PrimaryButton onClick={(e) => {
+                            e.preventDefault();
+                            event?.setCreateModeHandler(false)
+                        }}>Cancel</PrimaryButton>
                     </CreateEventActionContainer>
                 </CreateEventForm>
             </CreateEventContainer>
