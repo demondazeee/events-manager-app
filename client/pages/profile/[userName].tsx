@@ -1,14 +1,7 @@
 import {GetServerSideProps} from "next"
-import styled from "styled-components"
-import { PrimaryButton } from "../../components/elements/Buttons"
-import {H2, H3} from "../../components/elements/Typography"
-import {Card} from "../../components/layouts/Card"
-import {ContainerLayout} from "../../components/layouts/Container"
-import {PageContainer} from "../../components/layouts/PageContainer"
-import EventList from "../../components/pages/Events/EventList"
 import Profile from "../../components/pages/Profile/Profile"
-import {UserDataBody, UserDataWithEvents} from "../../hooks/useAuth"
-import { GrAdd } from "react-icons/gr"
+import {UserDataWithEvents} from "../../hooks/useAuth"
+
 
 type ProfilePageProp = {
     data: UserDataWithEvents
@@ -17,7 +10,7 @@ type ProfilePageProp = {
 
 
 const ProfilePage = ({data} : ProfilePageProp) => {
-    
+
 
     return (
         <>
