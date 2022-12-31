@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { authContext } from "../store/AuthContext";
 import { useAuth } from "./useAuth";
@@ -18,6 +19,11 @@ export type EventsDataBodyInput = {
 }
 
 export interface useEventsBody {
+    isCreateMode: boolean;
+    setCreateModeHandler: (isCreate: boolean) => void;
+    isLoading: boolean;
+    eventsData: EventsDataBody[];
+    setDefaultData: (data: EventsDataBody[]) => void;
     fetchEvents: (data: EventsDataBodyInput) => Promise<void>;
     createEvent: (data: EventsDataBodyInput) => Promise<void>;
 }
@@ -27,14 +33,21 @@ export const useEvents = () => {
     const user = useContext(authContext)
     const [eventsData, setEventsData] = useState<EventsDataBody[]>([])
     const [isLoading, setIsLoading] = useState(true)
+    const {push} = useRouter()
+    const [isCreateMode, setIsCreateMode] = useState(false)
+    const setCreateModeHandler = (isCreate: boolean) => {
+        setIsCreateMode(isCreate)
+    }
 
-    const fetchEvents = async (data: EventsDataBodyInput) => {
+
+    const setDefaultData = (data: EventsDataBody[]) => {
+        setEventsData(data)
+    }
+
+    const fetchEvents = async () => {
         const res = await fetchUrl({
             paths: "events",
-            method: "POST",
-            fetchOptions: {
-                body: JSON.stringify(data)
-            }
+            method: "GET"
         })
         
         if(!res){
@@ -68,8 +81,15 @@ export const useEvents = () => {
         } else {
             if(res.ok){
                 const data = await res.json();
-                setEventsData(data)
+                setEventsData(prev => {
+                    return [
+                        data,
+                        ...prev
+                    ]
+                })
                 setIsLoading(false)
+                setCreateModeHandler(false)
+
             } else {
                 console.log("error")
                 setIsLoading(false)
@@ -78,6 +98,11 @@ export const useEvents = () => {
     }
 
     return {
+        isCreateMode,
+        setCreateModeHandler,
+        isLoading,
+        eventsData,
+        setDefaultData,
         fetchEvents,
         createEvent
     }
