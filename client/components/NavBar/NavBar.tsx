@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import styled from "styled-components";
 import { authContext } from "../../store/AuthContext";
+import { eventContext } from "../../store/EventContext";
 import { LinkButton, NextLink } from "../elements/Buttons";
 import { LI, UL } from "../elements/Lists";
 import { H2 } from "../elements/Typography";
@@ -15,6 +16,8 @@ const HeaderContainer = styled.header`
     padding: 1rem;
     background-color: #fff;
     border-bottom: 1px solid #000;
+
+    z-index: 100;
 `
 
 const Nav = styled.nav`
@@ -47,6 +50,7 @@ const AuthMenuLists = styled(UL)`
 
 const NavBar = () => {
     const auth = useContext(authContext)
+    const event = useContext(eventContext)
 
     const router = useRouter()
     return (
@@ -88,6 +92,7 @@ const NavBar = () => {
                                         <LinkButton onClick={(e)=> {
                                             e.preventDefault();
                                             auth?.logoutUser()
+                                            event?.setCreateModeHandler(false)
                                         }}>Logout</LinkButton>
                                     </LI>
                                 </>
