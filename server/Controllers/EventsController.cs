@@ -40,6 +40,22 @@ public class EventsController : ControllerBase
         return Ok(mapped);
     }
 
+    [HttpGet("{eventId}")]
+    public async Task<ActionResult<IEnumerable<EventsDto>>> GetEvents(
+        string eventId
+    )
+    {
+        var events = await eventRepo.GetEvent(new Guid(eventId));
+
+        if(events == null) {
+            return NotFound();
+        }
+
+        var mapped = mapper.Map<EventsDto>(events);
+        return Ok(mapped);
+    }
+
+
 
     [Authorize(Roles = "Admin, Manager")]
     [HttpPost]
