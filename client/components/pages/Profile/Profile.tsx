@@ -1,11 +1,12 @@
-import {useState} from "react"
+import {useContext, useEffect, useState} from "react"
 import styled from "styled-components"
 import {UserDataBody, UserDataWithEvents} from "../../../hooks/useAuth"
+import { authContext } from "../../../store/AuthContext"
+import { eventContext } from "../../../store/EventContext"
 import {PrimaryButton} from "../../elements/Buttons"
 import {H2, H3} from "../../elements/Typography"
 import {Card} from "../../layouts/Card"
-import {ContainerLayout} from "../../layouts/Container"
-import {PageContainer} from "../../layouts/PageContainer"
+import PageContainer from "../../layouts/PageContainer"
 import CreateEvents from "../Events/CreateEvents"
 import EventList from "../Events/EventList"
 
@@ -30,8 +31,8 @@ const SomeItem = styled.div `
    }
 `
 const MainContainer = styled.div `
-    flex: 2;
-   
+flex: 2;
+
 `
 
 const UserProfileContainer = styled.div `
@@ -50,19 +51,26 @@ const UserIcon = styled.img `
 
 
 const Profile = ({data} : ProfileProp) => {
+    const loggedInUser = useContext(authContext)
     const {username, events} = data
-    const [createMode, setCreateMode] = useState(false)
+    const event = useContext(eventContext)
+    useEffect(() => {
+        event?.setDefaultData(events)
+    }, [])
+    
 
     return (
         <>
-        <ProfileItemContainer>
-            <SomeContainer>
-                <SomeItem/>
-                <MainContainer> {
-                    createMode ? <CreateEvents/>: <EventList eventData={events}/>
-                } </MainContainer>
-                <SomeItem>
-                    <Card>
+            <PageContainer 
+            mainColumn={
+                loggedInUser?.userData.username == username && event?.isCreateMode ? <CreateEvents/>
+                : 
+                    <EventList eventData={event!.eventsData}/>
+
+                }
+            lastColumn={(
+                <>
+                <Card>
                         <UserProfileContainer>
 
                             <UserIconContainer>
@@ -71,21 +79,21 @@ const Profile = ({data} : ProfileProp) => {
                             <H3>{username}</H3>
                         </UserProfileContainer>
                     </Card>
-
+                    {loggedInUser?.userData.username == username &&
                     <Card>
                         <UserProfileContainer>
                             <PrimaryButton onClick={
                                 () => {
-                                    setCreateMode(prev => !prev)
+                                    event?.setCreateModeHandler(true)
                                 }
                             }>
                                 Create an Event
                             </PrimaryButton>
                         </UserProfileContainer>
-                    </Card>
-                </SomeItem>
-            </SomeContainer>
-        </ProfileItemContainer>
+                     </Card>
+                    }
+                </>
+            )}/>
         </>
     )
 }
