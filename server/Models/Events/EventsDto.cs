@@ -15,9 +15,25 @@ public class EventsDto
 
     [Required]
     public string Description { get; set; } = string.Empty;
-    public DateTime CreatedAt { get; set; }
 
-    // public Users? Owner {get; set;}
+     [Required]
+    public DateTime FromDate { get; set; }
+
+    [Required]
+    public DateTime ToDate { get; set; }
+
+    [Required]
+    public string Location { get; set; } = string.Empty;
+
+    [Required]
+    public string Category {get; set; } = string.Empty;
+    
+    [Required]
+    public bool IsFree {get; set;}
+
+    public bool IsClosed {get; set;}
+
+    public DateTime CreatedAt { get; set; }
 
     public string OwnerName { get; set; } = string.Empty;
 
