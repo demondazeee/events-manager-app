@@ -1,33 +1,13 @@
-import { GetServerSideProps } from "next"
+import { GetServerSideProps, GetStaticProps } from "next"
 import PageContainer from "../components/layouts/PageContainer"
 import EventList from "../components/pages/Events/EventList"
 import { EventsDataBody } from "../hooks/useEvents"
-
-const dummyData: EventsDataBody[] = [
-  {
-    id: "c0dc4d68-a6a4-4ed6-beea-4ac29d1249f6",
-    headerImage: "",
-    title: "zxczxc",
-    description: "zxczxc",
-    createdAt: "2022-12-28T22:17:33.815244Z",
-    ownerName: "manager"
-  },
-  {
-    id: "c0dc4d68-a6a4-4ed6-beea-4ac29d1249f6",
-    headerImage: "",
-    title: "zxczxc",
-    description: "zxczxc",
-    createdAt: "2022-12-28T22:17:33.815244Z",
-    ownerName: "manager"
-  }
-]
 
 type DataProp = {
   data: EventsDataBody[]
 }
 
 const Home = ({data}: DataProp) => {
-  
   return (
     <>
        <PageContainer mainColumn={<EventList eventData={data} />} />
@@ -35,9 +15,9 @@ const Home = ({data}: DataProp) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const url = process.env.NEXT_PUBLIC_SERVER
-  const res = await fetch(`${url}/events`)
+  const res = await fetch(`${url}/events?pageSize=5`)
 
   if(res.ok) {
     const data = await res.json();
@@ -45,7 +25,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
     return {
       props: {
         data
-      }
+      },
+      revalidate: 2
     }
   }
 
