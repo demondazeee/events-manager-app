@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebAPI.Entities;
 using WebAPI.Models;
 using WebAPI.Services;
+using System.Text.Json;
 
 [ApiController]
 [Route("/events")]
@@ -31,12 +32,16 @@ public class EventsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<EventsDto>>> GetEvents(
         string? name,
-        string? userId
+        string? userId,
+        int pageSize=10,
+        int pageNumber=1
+
     )
     {
-        var events = await eventRepo.GetEvents(name, userId);
+        var (result, pageMetadata) = await eventRepo.GetEvents(name, userId, pageNumber, pageSize);
 
-        var mapped = mapper.Map<IEnumerable<EventsDto>>(events);
+        var mapped = mapper.Map<IEnumerable<EventsDto>>(result);
+        Response.Headers.Add("X-Pagination",  JsonSerializer.Serialize(pageMetadata));
         return Ok(mapped);
     }
 

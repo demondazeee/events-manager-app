@@ -1,3 +1,4 @@
+using System.Text.Json;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,9 @@ public class UserController : AuthBaseController
 
     [HttpGet("{userName}")]
     public async Task<ActionResult<UserDetailWithEventsDto>> GetUserByUsername(
-        string userName
+        string userName,
+        int eventPageNumber = 1,
+        int eventPageSize=10
     ) {
         var username = await userRepo.GetValueByExpression(u => u.Username == userName);
 
@@ -32,7 +35,7 @@ public class UserController : AuthBaseController
             return NotFound();
         }
 
-        var events = await eventRepo.GetEvents("", username.Id.ToString());
+        var (events, pageMetadata) = await eventRepo.GetEvents(userName, "", eventPageNumber, eventPageSize);
         if(events == null) {
             return NotFound();
         }
@@ -41,6 +44,7 @@ public class UserController : AuthBaseController
         var mappedEvents = mapper.Map<IEnumerable<EventsDto>>(events);
 
         result.Events = mappedEvents;
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pageMetadata));
 
         return Ok(result);
     }
@@ -69,7 +73,7 @@ public class UserController : AuthBaseController
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpPost("register")]
+    [HttpPost("manager/register")]
     public async Task<ActionResult<ManagerDto>> CreateManager(
         CreateManagerDto managerDto
     ) 
