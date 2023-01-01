@@ -32,6 +32,12 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
         return await context.Set<T>().Where(exp).FirstOrDefaultAsync();
     }
 
+
+    public async Task<IEnumerable<T>> GetValuesByExpression(Expression<Func<T, bool>> exp)
+    {
+        return await context.Set<T>().Where(exp).ToListAsync();
+    }
+
     public async Task<IEnumerable<T>> GetValues()
     {
         return await context.Set<T>().ToListAsync();
