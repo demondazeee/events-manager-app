@@ -3,11 +3,15 @@ import styled from "styled-components"
 import {EventsDataBody} from "../../../hooks/useEvents"
 import {H2, H3} from "../../elements/Typography"
 import { Card } from "../../layouts/Card"
+import PageContainer from "../../layouts/PageContainer"
 
 type EventItemProps = {
     data: EventsDataBody
 }
 
+const EventDetailContainer = styled.div`
+    padding: 50px 0;
+`
 
 const EventContainer = styled.div `
     padding: 2rem;
@@ -40,29 +44,31 @@ const EventDetails = ({data} : EventItemProps) => {
     const date = new Date(createdAt)
     return (
         <>
-            <Card>
-                <EventContainer>
-                    <ImageContainer>
-                        <HeaderImage src="/sample.jpg"/>
-                    </ImageContainer>
-                    <H2>{title}</H2>
-                    
-                    <EventItemFooter>
-                        <p>{
-                            date.toDateString()
-                        }</p>
-                        <p>Posted By:
-                            <Link href={
-                                `/profile/${ownerName}`
-                            }>
-                                {ownerName}</Link>
+        <EventDetailContainer>
+                <Card>
+                    <EventContainer>
+                        <ImageContainer>
+                            <HeaderImage src="/sample.jpg"/>
+                        </ImageContainer>
+                        <H2>{title}</H2>
+                        
+                        <EventItemFooter>
+                            <p>{
+                                date.toDateString()
+                            }</p>
+                            <p>Posted By:
+                                <Link href={
+                                    `/profile/${ownerName}`
+                                }>
+                                    {ownerName}</Link>
+                            </p>
+                        </EventItemFooter>
+                        <p>
+                            {description}
                         </p>
-                    </EventItemFooter>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, deserunt non at repellat in laudantium quam deleniti, debitis autem omnis rem perferendis eius, soluta asperiores rerum. Molestias laudantium mollitia vero.
-                    </p>
-                </EventContainer>
-            </Card>
+                    </EventContainer>
+                </Card>
+            </EventDetailContainer>
         </>
     )
 }
