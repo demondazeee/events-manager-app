@@ -13,7 +13,7 @@ const Background = styled.div`
     height: 100vh;
     width: 100%;
     background-color: rgba(0,0,0,0.5);
-    z-index: 1;
+    z-index: 1000;
 `
 
 const ModalContainer = styled.div`
@@ -21,7 +21,7 @@ const ModalContainer = styled.div`
     top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 100;
+    z-index: 1001;
 `
 
 const Modal = ({children}: ModalProp) => {
