@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 
 
-const PageItemsContainer = styled.div `
+export const PageItemsContainer = styled.div `
     padding: 50px 0;
 `
 
