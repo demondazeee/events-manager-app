@@ -39,6 +39,7 @@ builder.Services.AddDbContext<Db>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IEventsRepository, EventsRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
