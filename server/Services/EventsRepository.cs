@@ -17,28 +17,45 @@ public class EventsRepository : RepositoryBase<Events>, IEventsRepository
         .ToListAsync();
     }
     
-    public async Task<IEnumerable<Events>> GetEvents(string? userName, string? userId)
+    public async Task<(IEnumerable<Events>, PaginationMetadata)> GetEvents(
+        string? userName, 
+        string? userId,
+        int pageNumber,
+        int pageSize
+        )
     {
+
+        var collection = _context.Events as IQueryable<Events>;
        if(!string.IsNullOrWhiteSpace(userName)){
-         return await _context.Events
-        .Where(x => x.Owner!.Username == userName)
-        .Include(x => x.Owner)
-        .OrderByDescending(x => x.CreatedAt)
-        .ToListAsync();
+            userName = userName.Trim();
+            collection = collection.Where(x => x.Owner!.Username == userName)
+            .Include(x => x.Owner)
+            .OrderByDescending(x => x.CreatedAt);
        }
 
        if(!string.IsNullOrWhiteSpace(userId)) {
-        return await _context.Events
-        .Where(x => x.Owner!.Id == new Guid(userId!))
-        .Include(x => x.Owner)
-        .OrderByDescending(x => x.CreatedAt)
-        .ToListAsync();
+            collection = collection
+            .Where(x => x.Owner!.Id == new Guid(userId!))
+            .Include(x => x.Owner)
+            .OrderByDescending(x => x.CreatedAt);
        }
 
-        return await _context.Events
+       var totalItemCount = await collection.CountAsync();
+
+       var pageMetadata = new PaginationMetadata(
+        pageNumber,
+        pageSize,
+        totalItemCount
+       );
+
+        var result = await collection
         .Include(x => x.Owner)
         .OrderByDescending(x => x.CreatedAt)
+        .Skip(pageSize * (pageNumber - 1))
+        .Take(pageSize)
         .ToListAsync();
+
+        return (result, pageMetadata);
     }
 
     public async Task<Events?> GetEvent(Guid eventId) {

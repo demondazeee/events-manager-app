@@ -5,5 +5,5 @@ namespace WebAPI.Services;
 public interface IEventsRepository: IRepositoryBase<Events>
 {
     Task<Events?> GetEvent(Guid eventId);
-    Task<IEnumerable<Events>> GetEvents(string? name, string? userId);
+    Task<(IEnumerable<Events>, PaginationMetadata)> GetEvents(string? userName, string? userId, int pageNumber, int pageSize);
 }
