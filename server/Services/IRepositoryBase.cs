@@ -12,5 +12,7 @@ public interface IRepositoryBase<T>
 
     Task<T?> GetValueByExpression(Expression<Func<T, bool>> exp);
 
+    Task<IEnumerable<T>> GetValuesByExpression(Expression<Func<T, bool>> exp);
+
     Task SaveChangesAsync();
 }
