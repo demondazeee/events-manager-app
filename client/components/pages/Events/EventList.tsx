@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { EventsDataBody } from "../../../hooks/useEvents"
 import { UL } from "../../elements/Lists"
+import { H3 } from "../../elements/Typography"
 import {ContainerLayout} from '../../layouts/Container'
 import EventItem from "./EventItem"
 
@@ -20,7 +21,10 @@ const EventList = ({eventData}: EventListProp) => {
     return (
         <>
             <EventListContainer>
-                {eventData.map(e => {
+                {eventData.length <= 0 ? 
+                <H3>No Data : (</H3>
+                :
+                eventData.map(e => {
                     return (
                         <EventItem key={e.id} data={e} />
                     )
