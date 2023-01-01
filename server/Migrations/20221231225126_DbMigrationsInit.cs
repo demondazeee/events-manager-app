@@ -34,7 +34,13 @@ namespace server.Migrations
                     HeaderImage = table.Column<string>(type: "text", nullable: true),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
+                    FromDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ToDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Location = table.Column<string>(type: "text", nullable: false),
+                    EventsType = table.Column<int>(type: "integer", nullable: false),
+                    IsFree = table.Column<bool>(type: "boolean", nullable: false),
+                    IsClosed = table.Column<bool>(type: "boolean", nullable: false),
                     OwnerId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -51,7 +57,7 @@ namespace server.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "Password", "Role", "Username" },
-                values: new object[] { new Guid("5ecc49fa-59c6-4286-ad91-d221c81dad2e"), "admin@admin.com", "$argon2id$v=19$m=65536,t=3,p=4$9mZtcLqZf2iTjaHrPPle+2WGEcUapJ/bJTU+HvSitMCokvw/El/e27ff+wNd99Xk6blNPHSrXVRm3/EX1Qj8JlMb2XIdz+stBavruSg3ENFRE5NyvQwHwcsCbeGqpapTf7cTclpgKH5E4eMsu5D+/w4TDy/lmBXyppILkIUuB8U$zYhLNoOfM0BuWQkLYBlfRUCLZ6PdxDltM87Zf/eUwh8", 0, "admin" });
+                values: new object[] { new Guid("5ecc49fa-59c6-4286-ad91-d221c81dad2e"), "admin@admin.com", "$argon2id$v=19$m=65536,t=3,p=4$Gu1oQp6Ig9nxVTAamiXoU12TkCPef3WEIl0L7szkjQLygvCvnQz176drNVeoib4GOtTS5huzIOE0yyOCClseVgrXTQ4CMgd1aWJ4tritJhm16SXbkfMX4cJvQwqRmS96DEC7WsH5id694GCzCK7ZVkugdquDYxgg6VjhdPYF844$iP9T8Z/3ZkBTzqHDd4pGVdqVe8YrKjcNURrCONZaMm0", 0, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_OwnerId",

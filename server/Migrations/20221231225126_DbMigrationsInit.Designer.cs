@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebAPI.DBContext;
@@ -11,9 +12,11 @@ using WebAPI.DBContext;
 namespace server.Migrations
 {
     [DbContext(typeof(Db))]
-    partial class DbModelSnapshot : ModelSnapshot
+    [Migration("20221231225126_DbMigrationsInit")]
+    partial class DbMigrationsInit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,47 +25,11 @@ namespace server.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("WebAPI.Entities.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("deee9a3d-b385-4c98-b452-897003a0b497"),
-                            Name = "Music"
-                        },
-                        new
-                        {
-                            Id = new Guid("8e3eb515-b114-4a3f-98e6-ce37bbb1386e"),
-                            Name = "Visual Arts and Performance"
-                        },
-                        new
-                        {
-                            Id = new Guid("52e56a6b-52bc-4f91-bac4-2406f87cc94d"),
-                            Name = "Business"
-                        });
-                });
-
             modelBuilder.Entity("WebAPI.Entities.Events", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -70,6 +37,9 @@ namespace server.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("EventsType")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("FromDate")
                         .HasColumnType("timestamp with time zone");
@@ -134,7 +104,7 @@ namespace server.Migrations
                         {
                             Id = new Guid("5ecc49fa-59c6-4286-ad91-d221c81dad2e"),
                             Email = "admin@admin.com",
-                            Password = "$argon2id$v=19$m=65536,t=3,p=4$lpcXs+I5CB+pxNd56gJ8lyUg6pmgFfulyLRne/SKhmD1Jd+4Y9SWgWyd+rDrI43zDsjVG2Qv9y1iV5AYEtCV7uNuatKaaBDVAognuhx3oOSkzBdt/DeeaNpE7CJfHi9/kVtWBiTa/hpeVtIHETwcZFzr9bcHjAugfgddlj3dTQI$7YwfQ4HDmtAYm7ubbUmJYlMXslCX1bCsP2DCAPuwOIE",
+                            Password = "$argon2id$v=19$m=65536,t=3,p=4$Gu1oQp6Ig9nxVTAamiXoU12TkCPef3WEIl0L7szkjQLygvCvnQz176drNVeoib4GOtTS5huzIOE0yyOCClseVgrXTQ4CMgd1aWJ4tritJhm16SXbkfMX4cJvQwqRmS96DEC7WsH5id694GCzCK7ZVkugdquDYxgg6VjhdPYF844$iP9T8Z/3ZkBTzqHDd4pGVdqVe8YrKjcNURrCONZaMm0",
                             Role = 0,
                             Username = "admin"
                         });

@@ -12,8 +12,8 @@ using WebAPI.DBContext;
 namespace server.Migrations
 {
     [DbContext(typeof(Db))]
-    [Migration("20221228123437_DbMigrationsInit")]
-    partial class DbMigrationsInit
+    [Migration("20230101005247_CategoryAndEventTableUpdate")]
+    partial class CategoryAndEventTableUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,11 +25,30 @@ namespace server.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("WebAPI.Entities.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("WebAPI.Entities.Events", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -38,7 +57,20 @@ namespace server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("HeaderImage")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsFree")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid>("OwnerId")
@@ -47,6 +79,9 @@ namespace server.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -85,7 +120,7 @@ namespace server.Migrations
                         {
                             Id = new Guid("5ecc49fa-59c6-4286-ad91-d221c81dad2e"),
                             Email = "admin@admin.com",
-                            Password = "$argon2id$v=19$m=65536,t=3,p=4$9mZtcLqZf2iTjaHrPPle+2WGEcUapJ/bJTU+HvSitMCokvw/El/e27ff+wNd99Xk6blNPHSrXVRm3/EX1Qj8JlMb2XIdz+stBavruSg3ENFRE5NyvQwHwcsCbeGqpapTf7cTclpgKH5E4eMsu5D+/w4TDy/lmBXyppILkIUuB8U$zYhLNoOfM0BuWQkLYBlfRUCLZ6PdxDltM87Zf/eUwh8",
+                            Password = "$argon2id$v=19$m=65536,t=3,p=4$jkN6+q4TsYUEBw1cn/cuyRXt4kGpG8NVWvBslj6mfGZFeJmwWcmUbEn86Wisb5oj6ixCx8lO82p6VJsSpVwSTBrxVmMC5BW7C8UHG3ioAiKsptpVGvhvaH/9tGmZudorIi7EFILSV+Bw8dG1arM7NNmvTewCawVSA1myJildUok$VW/R/Hd/xrbLGOX43FVrx1e2FHsbe3GxZ7tRAOJPspI",
                             Role = 0,
                             Username = "admin"
                         });
