@@ -10,10 +10,12 @@ export const Input = styled.input`
 `
 
 export const TextArea = styled.textarea`
+    display: block;
     font-size: 1.5rem;
     resize: none;
-    height: 100%;
+    min-height: 250px;
+    width: 100%;
     border: 1px solid #000;
-    padding: 1rem;
+    padding: 2rem;
     outline: none;
 `
