@@ -4,17 +4,25 @@ import Container from '../components/layouts/Container'
 import AuthContext from '../store/AuthContext'
 import EventContext from '../store/EventContext'
 import CategoryContext from '../store/CategoryContext'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ToastContext from '../store/ToastContext'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <AuthContext>
-      <EventContext>
-        <CategoryContext>
-          <Container>
-            <Component {...pageProps} />
-          </Container>
-        </CategoryContext>
-      </EventContext>
-    </AuthContext>
+   <>
+   <ToastContainer />
+    <ToastContext>
+      <AuthContext>
+        <EventContext>
+          <CategoryContext>
+            <Container>
+              <Component {...pageProps} />
+            </Container>
+          </CategoryContext>
+        </EventContext>
+      </AuthContext>
+    </ToastContext>
+   </>
   )
 }
