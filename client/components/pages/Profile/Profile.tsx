@@ -1,8 +1,9 @@
 import {useContext, useEffect, useState} from "react"
 import styled from "styled-components"
 import {UserDataBody, UserDataWithEvents} from "../../../hooks/useAuth"
-import { authContext } from "../../../store/AuthContext"
-import { eventContext } from "../../../store/EventContext"
+import {authContext} from "../../../store/AuthContext"
+import {eventContext} from "../../../store/EventContext"
+import { UserRole } from "../../../types/user-role"
 import {PrimaryButton} from "../../elements/Buttons"
 import {H2, H3} from "../../elements/Typography"
 import {Card} from "../../layouts/Card"
@@ -55,45 +56,47 @@ const Profile = ({data} : ProfileProp) => {
     const {username, events} = data
     const event = useContext(eventContext)
     useEffect(() => {
-        event?.setDefaultData(events)
+        event ?. setDefaultData(events)
     }, [])
-    
+
 
     return (
         <>
-            <PageContainer 
-            mainColumn={
-                loggedInUser?.userData.username == username && event?.isCreateMode ? <CreateEvents/>
-                : 
-                    <EventList eventData={event!.eventsData}/>
-
+            <PageContainer mainColumn={
+                    loggedInUser ?. userData.username == username && event ?. isCreateMode ? <CreateEvents/>: <EventList eventData={
+                        event !.eventsData
+                    }/>
                 }
-            lastColumn={(
-                <>
-                <Card>
-                        <UserProfileContainer>
+                lastColumn={
+                    (
+                        <>
+                            <Card>
+                                <UserProfileContainer>
 
-                            <UserIconContainer>
-                                <UserIcon src="/user-icon.png" alt="user-icon"/>
-                            </UserIconContainer>
-                            <H3>{username}</H3>
-                        </UserProfileContainer>
-                    </Card>
-                    {loggedInUser?.userData.username == username &&
-                    <Card>
-                        <UserProfileContainer>
-                            <PrimaryButton onClick={
-                                () => {
-                                    event?.setCreateModeHandler(true)
-                                }
-                            }>
-                                Create an Event
-                            </PrimaryButton>
-                        </UserProfileContainer>
-                     </Card>
-                    }
-                </>
-            )}/>
+                                    <UserIconContainer>
+                                        <UserIcon src="/user-icon.png" alt="user-icon"/>
+                                    </UserIconContainer>
+                                    <H3>{username}</H3>
+                                </UserProfileContainer>
+                            </Card>
+                            {
+                                UserRole.Member !== loggedInUser?.userData.role &&
+                                loggedInUser?.userData.username == username &&
+                                <Card>
+                                    <UserProfileContainer>
+                                        <PrimaryButton onClick={
+                                            () => {
+                                                event ?. setCreateModeHandler(true)
+                                            }
+                                        }>
+                                            Create an Event
+                                        </PrimaryButton>
+                                    </UserProfileContainer>
+                                </Card>
+                            } 
+                        </>
+                    )
+                }/>
         </>
     )
 }
