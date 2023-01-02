@@ -1,9 +1,10 @@
+import Link from "next/link"
 import { useContext, useReducer } from "react"
 import styled from "styled-components"
 import { authContext } from "../../../store/AuthContext"
 import { PrimaryButton } from "../../elements/Buttons"
 import { Input } from "../../elements/Inputs"
-import { H2, H3 } from "../../elements/Typography"
+import { H2, H3, P } from "../../elements/Typography"
 import Modal from "../../Modal/Modal"
 
 const LoginFormContainer = styled.div`
@@ -21,8 +22,29 @@ const LoginFormContainer = styled.div`
 const LoginForm = styled.form`
     display: flex;
     flex-direction: column;
+    padding-bottom: 5rem;
     gap: 5rem;
+
+    border-bottom: 1px solid #444;
 `
+const LoginFooterContainer = styled.footer`
+    & > * {
+        color: #444;
+        font-size: 1.2rem;
+    }
+`
+
+const RegisterLinkButton = styled.a`
+    text-decoration: underline;
+    color: #E11845;
+    font-weight: 600;
+
+    &:hover {
+        cursor: pointer;
+        
+    }
+`
+
 const FormInputs = styled.div`
     display: flex;
     flex-direction: column;
@@ -104,8 +126,11 @@ const Login = () => {
                             <PrimaryButton onClick={(e) => {
                                 e.preventDefault();
                                 auth?.loginUser({
+                                    path: 'member',
+                                   userLoginInput: {
                                     username: state.username,
                                     password: state.password
+                                   }
                                 })
                                 auth?.showLoginHandler()
                             }}>Login</PrimaryButton>
@@ -115,6 +140,9 @@ const Login = () => {
                             }}>Cancel</PrimaryButton>
                         </FormActionContainer>
                    </LoginForm>
+                   <LoginFooterContainer>
+                        <P>New User? <RegisterLinkButton>Sign up FREE Now</RegisterLinkButton></P>
+                   </LoginFooterContainer>
                 </LoginFormContainer>
             </Modal>
         </>
