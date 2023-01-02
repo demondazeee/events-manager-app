@@ -54,7 +54,7 @@ public class UserController : AuthBaseController
         AuthAdminDto adminDto
     )
     {
-        return await LoginUser<AuthAdminDto, AdminDto>(adminDto);
+        return await LoginUser<AuthAdminDto, AdminDto>(adminDto, UserRole.Admin);
     }
 
     [Authorize(Roles = "Admin")]
@@ -69,7 +69,7 @@ public class UserController : AuthBaseController
     public async Task<ActionResult<ManagerDto>> LoginManager(
         AuthManagerDto authDto
     ) {
-        return await LoginUser<AuthManagerDto, ManagerDto>(authDto);
+        return await LoginUser<AuthManagerDto, ManagerDto>(authDto, UserRole.Manager);
     }
 
     [Authorize(Roles = "Admin")]
@@ -86,7 +86,7 @@ public class UserController : AuthBaseController
         AuthMemberDto memberDto
     )
     {
-        return await LoginUser<AuthMemberDto, MemberDto>(memberDto);
+        return await LoginUser<AuthMemberDto, MemberDto>(memberDto, UserRole.Member);
     }
 
     [HttpPost("member/register")]
