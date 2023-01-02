@@ -44,6 +44,7 @@ const AuthMenuLists = styled(UL)`
     display: flex;
     gap: 2rem;
     align-items: center;
+
 `
 
 
@@ -102,7 +103,7 @@ const NavBar = () => {
                                         <LinkButton onClick={auth?.showLoginHandler}>Login</LinkButton>
                                     </LI>
                                     <LI>
-                                        <LinkButton>Register</LinkButton>
+                                        <NextLink path="/manager/login">For Managers</NextLink>
                                     </LI>
                                 </>
                                 }
