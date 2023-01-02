@@ -17,6 +17,7 @@ const Home = ({data}: DataProp) => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const url = process.env.NEXT_PUBLIC_SERVER
+ try{
   const res = await fetch(`${url}/events?pageSize=5`)
 
   if(res.ok) {
@@ -36,6 +37,13 @@ export const getStaticProps: GetStaticProps = async () => {
       data: []
     }
   }
+ } catch(e: any) {
+  return {
+    props: {
+      data: []
+    }
+  }
+ }
 }
 
 export default Home
