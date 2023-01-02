@@ -32,18 +32,32 @@ public abstract class AuthBaseController : ControllerBase
     }
 
     protected async Task<ActionResult<U>> LoginUser<T, U>(
-        T authDto
+        T authDto,
+        UserRole role
     ) where T: AuthBaseDto
     where U: UserBaseDto
     {
         var user = await userRepo.GetValueByExpression(u => u.Username == authDto.Username);
 
         if(user == null){
-            return Unauthorized("Invalid Username");
+            return Unauthorized(new {
+                Message = "Invalid Username"
+            });
         }
 
+
         if(!Argon2.Verify(user.Password, authDto.Password)) {
-            return Unauthorized("Invalid Password");
+            return Unauthorized(new {
+                Message = "Invalid Password"
+            });
+        }
+
+
+
+        if(user.Role != role) {
+            return Unauthorized(new {
+                Message = "Invalid Log In"
+            });
         }
 
         var mappedUser = mapper.Map<U>(user);
@@ -101,7 +115,9 @@ public abstract class AuthBaseController : ControllerBase
             var oldToken = Request.Cookies["rt"];
 
             if(oldToken == null){
-                return Unauthorized("No token");
+                return Unauthorized(new {
+                Message = "No token found"
+            });
             }
             var decoded = new JwtSecurityTokenHandler().ValidateToken(
                 oldToken,
@@ -119,7 +135,9 @@ public abstract class AuthBaseController : ControllerBase
             );
             if (validatedToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
-                return Unauthorized("invalid");
+                return Unauthorized(new {
+                Message = "Invalid Token"
+            });
             }
 
             if(decoded.Identity == null ){
@@ -134,7 +152,9 @@ public abstract class AuthBaseController : ControllerBase
             var user = await userRepo.GetValueByExpression(u => u.Id == new Guid(userId));
 
             if(user == null) {
-                return NotFound("User not found");
+                return NotFound(new {
+                Message = "User not found"
+            });
             }
             
             var mappedUser = mapper.Map<T>(user);
@@ -161,7 +181,7 @@ public abstract class AuthBaseController : ControllerBase
         });
 
         return Ok(new {
-            message = "user logged out"
+            message = "User Logged out"
         });
     }
 }
