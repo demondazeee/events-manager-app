@@ -1,4 +1,4 @@
-import { useContext, useReducer } from "react"
+import { useContext, useReducer, useState } from "react"
 import styled from "styled-components"
 import { categoryContext } from "../../../store/CategoryContext"
 import { eventContext } from "../../../store/EventContext"
@@ -6,6 +6,9 @@ import { PrimaryButton } from "../../elements/Buttons"
 import { Input, TextArea } from "../../elements/Inputs"
 import { Label } from "../../elements/Labels"
 import { Card } from "../../layouts/Card"
+import { Editor } from '@tinymce/tinymce-react';
+
+
 
 
 const CreateEventButton = styled(PrimaryButton)`
@@ -20,7 +23,7 @@ const CreateEventContainer = styled(Card)`
 const CreateEventForm = styled.form`
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 3rem;
     padding: 1rem;
 
     height: 100%;
@@ -98,6 +101,7 @@ const CreateEvents = () =>{
     const {categoryData} = useContext(categoryContext)
     
 
+
     return (
         <>
             <CreateEventContainer>
@@ -105,9 +109,31 @@ const CreateEvents = () =>{
                     <Input placeholder="Enter Event Title.." 
                         onChange={(e) => {dispatchFn({val: e.target.value, type: "TITLE_INPUT" })}}
                         />
-                        <TextArea placeholder="Enter Description..." 
+                        {/* <TextArea placeholder="Enter Description..." 
                         onChange={(e) => {dispatchFn({val: e.target.value, type: "DESC_INPUT" })}}
-                        />
+                        /> */}
+                    <div>
+                    <Editor
+                        apiKey='q491jmw5dh41v1qu4dt1007rxaezr76jntsd0ompg5vkc12h'
+                        //  onInit={(evt, editor) => {setValue(editor.getContent())}}
+                        //  initialValue="<p>This is the initial content of the editor.</p>"
+                        onEditorChange={(e) => {dispatchFn({val: e, type: "DESC_INPUT" })}}
+                        init={{
+                        height: 350,
+                        menubar: false,
+                        // paste_data_images: false,
+                        // smart_paste: false,
+                        plugins: [
+                            'autolink', 'link', 'image'
+                        ],
+                        toolbar:  [
+                            'undo redo | styles | bold italic underline fontfamily | link image',
+                            'alignleft aligncenter alignright'
+                          ],
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                        }}
+                    />
+                    </div>
                     <CreateEventDateContainer>
                         <CreateEventDateInputContainer>
                             <Label>From: </Label>
