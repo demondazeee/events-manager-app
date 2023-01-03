@@ -96,14 +96,13 @@ const reducerFn = (state: State, action: Action) => {
     return defaultState
 }
 
-const Login = () => {
+const Login = ({loginPath}: {loginPath: string}) => {
     const auth = useContext(authContext)
     const [state, dispatchFn] = useReducer(reducerFn, defaultState)
 
     return (
         <>
-            <Modal>
-                <LoginFormContainer>
+           <LoginFormContainer>
                     <H3>Login</H3>
                    <LoginForm>
                         <FormInputs>
@@ -126,7 +125,7 @@ const Login = () => {
                             <PrimaryButton onClick={(e) => {
                                 e.preventDefault();
                                 auth?.loginUser({
-                                    path: 'member',
+                                    path: loginPath,
                                    userLoginInput: {
                                     username: state.username,
                                     password: state.password
@@ -144,7 +143,6 @@ const Login = () => {
                         <P>New User? <RegisterLinkButton>Sign up FREE Now</RegisterLinkButton></P>
                    </LoginFooterContainer>
                 </LoginFormContainer>
-            </Modal>
         </>
     )
 }
