@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
 import Login from "../components/pages/Login/Login"
+import LoginModal from "../components/pages/Login/LoginModal"
 import { useAuth, useAuthBody } from "../hooks/useAuth"
 
 type AuthContextProp = {
@@ -43,7 +44,7 @@ const AuthContext=  ({children}: AuthContextProp) => {
     return (
         <>
             <authContext.Provider value={contextValue}>
-                {showLogin && <Login />}
+                {showLogin && <LoginModal />}
                 {children}
             </authContext.Provider>
         </>
