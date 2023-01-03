@@ -26,7 +26,7 @@ const MainContainer = styled.div `
 
 type PageContainerProp = {
     firstColumn?: ReactNode,
-    mainColumn: ReactNode,
+    mainColumn?: ReactNode,
     lastColumn?: ReactNode
 }
 
