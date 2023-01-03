@@ -4,6 +4,9 @@ import {EventsDataBody} from "../../../hooks/useEvents"
 import {H2, H3} from "../../elements/Typography"
 import { Card } from "../../layouts/Card"
 import PageContainer from "../../layouts/PageContainer"
+import parse from 'html-react-parser'
+
+
 
 type EventItemProps = {
     data: EventsDataBody
@@ -21,6 +24,8 @@ const EventContainer = styled.div `
     gap: 3rem;
 `
 
+
+
 const ImageContainer = styled.div `
     height: 450px;
 `
@@ -33,6 +38,11 @@ const HeaderImage = styled.img `
     overflow: hidden;
 `
 
+
+const EventDescriptionContainer = styled.div`
+    font-size: initial;
+`
+
 const EventItemFooter = styled.footer `
     display: flex;
     justify-content: space-between;
@@ -42,6 +52,7 @@ const EventItemFooter = styled.footer `
 const EventDetails = ({data} : EventItemProps) => {
     const {id, title, description, createdAt, ownerName} = data;
     const date = new Date(createdAt)
+
     return (
         <>
         <EventDetailContainer>
@@ -63,9 +74,9 @@ const EventDetails = ({data} : EventItemProps) => {
                                     {ownerName}</Link>
                             </p>
                         </EventItemFooter>
-                        <p>
-                            {description}
-                        </p>
+                        <EventDescriptionContainer>
+                            {parse(description)}
+                        </EventDescriptionContainer>
                     </EventContainer>
                 </Card>
             </EventDetailContainer>
