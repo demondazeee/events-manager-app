@@ -114,7 +114,7 @@ const CreateEvents = () =>{
                         /> */}
                     <div>
                     <Editor
-                        apiKey='q491jmw5dh41v1qu4dt1007rxaezr76jntsd0ompg5vkc12h'
+                        apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
                         //  onInit={(evt, editor) => {setValue(editor.getContent())}}
                         //  initialValue="<p>This is the initial content of the editor.</p>"
                         onEditorChange={(e) => {dispatchFn({val: e, type: "DESC_INPUT" })}}
