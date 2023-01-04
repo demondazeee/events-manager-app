@@ -131,7 +131,6 @@ const Login = ({loginPath}: {loginPath: string}) => {
                                     password: state.password
                                    }
                                 })
-                                auth?.showLoginHandler()
                             }}>Login</PrimaryButton>
                             <PrimaryButton onClick={(e) => {
                                 e.preventDefault();
@@ -139,9 +138,10 @@ const Login = ({loginPath}: {loginPath: string}) => {
                             }}>Cancel</PrimaryButton>
                         </FormActionContainer>
                    </LoginForm>
-                   <LoginFooterContainer>
-                        <P>New User? <RegisterLinkButton>Sign up FREE Now</RegisterLinkButton></P>
-                   </LoginFooterContainer>
+                  {loginPath != "admin" && 
+                <LoginFooterContainer>
+                   <P>New User? <RegisterLinkButton>Sign up FREE Now</RegisterLinkButton></P>
+                </LoginFooterContainer>}
                 </LoginFormContainer>
         </>
     )
