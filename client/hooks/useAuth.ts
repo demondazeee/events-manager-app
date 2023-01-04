@@ -4,6 +4,7 @@ import { useFetch } from "./useFetch"
 
 import {toast} from 'react-toastify'
 import { toastContext } from "../store/ToastContext"
+import { useRouter } from "next/router"
 
 export interface UserDataBody  {
     id: string
@@ -16,6 +17,16 @@ export interface UserDataWithEvents extends UserDataBody {
     events: EventsDataBody[]
 }
 
+export interface AdminUser extends UserDataWithEvents{
+
+}
+export interface ManagerUser extends UserDataWithEvents{
+
+}
+export interface MemberUser extends UserDataWithEvents{
+
+}
+
 export type LoginMemberBody = {
     username: string,
     password: string
@@ -26,7 +37,38 @@ type LoginUserProp = {
     userLoginInput: LoginMemberBody
 }
 
+const isAdmin = (data: unknown): data is AdminUser => {
+    if(data != null && typeof data === "object"){
+        if("role" in data) {
+            return data.role === 0
+        }
+    }
+    
+    return false
+}
+
+const isManager = (data: unknown): data is ManagerUser => {
+    if(data != null && typeof data === "object"){
+        if("role" in data) {
+            return data.role === 1
+        }
+    }
+    return false
+}
+
+const isMember = (data: unknown): data is MemberUser => {
+    if(data != null && typeof data === "object"){
+        if("role" in data) {
+            return data.role === 2
+        }
+    }
+    return false
+}
+
+
 export interface useAuthBody {
+    showLogin: boolean,
+    showLoginHandler: () => void,
     isLoading: boolean;
     isLoggedIn: boolean;
     userData: UserDataBody;
@@ -41,6 +83,12 @@ export const useAuth = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(true)
     const {fetchUrl} = useFetch()
     const {toastMessage} = useContext(toastContext)
+    const [showLogin, setShowLogin] = useState(false)
+    const {push} = useRouter()
+
+    const showLoginHandler = () => {
+        setShowLogin(prev => !prev)
+    }
 
 
 
@@ -62,14 +110,40 @@ export const useAuth = () => {
 
         } else {
             if(res.ok){
-                const data = await res.json();
-                setUserData(data)
-                setIsLoading(false)
-                setIsLoggedIn(true)
-                toastMessage({
-                    message: `Log In successfully! Welcome ${data.username}!`,
-                    type: "success"
-                })
+                const data: unknown = await res.json();
+
+                if(isAdmin(data)){
+                    setUserData(data)
+                    setIsLoading(false)
+                    setIsLoggedIn(true)
+                    toastMessage({
+                        message: `Log In successfully! Welcome ${data.username}!`,
+                        type: "success"
+                    })
+                    push(`/profile/${data.username}`)
+                }
+                if(isManager(data)) {
+                    setUserData(data)
+                    setIsLoading(false)
+                    setIsLoggedIn(true)
+                    toastMessage({
+                        message: `Log In successfully! Welcome ${data.username}!`,
+                        type: "success"
+                    })
+                    push('/')
+                }
+                if(isMember(data)){
+                    setUserData(data)
+                    setIsLoading(false)
+                    setIsLoggedIn(true)
+                    toastMessage({
+                        message: `Log In successfully! Welcome ${data.username}!`,
+                        type: "success"
+                    })
+                    showLoginHandler()
+                    push('/')
+                }
+                
             } else {
                 toastMessage({
                     message: "Invalid Log in",
@@ -127,6 +201,8 @@ export const useAuth = () => {
 
 
     return {
+        showLogin,
+        showLoginHandler,
         isLoading,
         isLoggedIn,
         userData,
