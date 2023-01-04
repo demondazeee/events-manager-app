@@ -1,5 +1,7 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Entities;
 using WebAPI.Models;
 using WebAPI.Services;
 
@@ -30,5 +32,17 @@ public class CategoryController : ControllerBase
         var mapped = mapper.Map<IEnumerable<CategoryDto>>(results);
 
         return Ok(mapped);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public async Task<ActionResult<CategoryDto>> CreateCategory(
+        CreateCategoryDto dto
+    ) {
+        var mapped = mapper.Map<Category>(dto);
+
+        await repo.Create(mapped);
+
+        return Ok(mapper.Map<CategoryDto>(mapped));
     }
 }
