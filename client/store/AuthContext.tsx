@@ -8,18 +8,14 @@ type AuthContextProp = {
 }
 
 interface AuthContextValue extends useAuthBody  {
-    showLogin: boolean;
-    showLoginHandler: () => void;
+
 }
 
 export const authContext = createContext<AuthContextValue | null>(null)
 
 const AuthContext=  ({children}: AuthContextProp) => {
-    const [showLogin, setShowLogin] = useState(false)
     const auth = useAuth()
-    const showLoginHandler = () => {
-        setShowLogin(prev => !prev)
-    }
+
 
     useEffect(() => {
         auth.refreshToken()
@@ -35,8 +31,6 @@ const AuthContext=  ({children}: AuthContextProp) => {
     }, [auth.isLoggedIn])
 
     const contextValue = {
-        showLogin,
-        showLoginHandler,
         ...auth
     }
 
@@ -44,7 +38,7 @@ const AuthContext=  ({children}: AuthContextProp) => {
     return (
         <>
             <authContext.Provider value={contextValue}>
-                {showLogin && <LoginModal />}
+                {auth.showLogin && <LoginModal />}
                 {children}
             </authContext.Provider>
         </>
