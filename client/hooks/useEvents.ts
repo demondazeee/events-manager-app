@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import { authContext } from "../store/AuthContext";
+import { toastContext } from "../store/ToastContext";
 import { useAuth } from "./useAuth";
 import { useFetch } from "./useFetch"
 
@@ -46,6 +47,9 @@ export const useEvents = () => {
     const [isLoading, setIsLoading] = useState(true)
     const {push} = useRouter()
     const [isCreateMode, setIsCreateMode] = useState(false)
+    const {toastMessage} = useContext(toastContext)
+
+
     const setCreateModeHandler = (isCreate: boolean) => {
         setIsCreateMode(isCreate)
     }
@@ -100,6 +104,10 @@ export const useEvents = () => {
                 })
                 setIsLoading(false)
                 setCreateModeHandler(false)
+                toastMessage({
+                    message: "Successfully Created an Event",
+                    type: "success"
+                })
 
             } else {
                 console.log("error")
