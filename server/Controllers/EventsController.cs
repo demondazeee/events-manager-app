@@ -5,6 +5,7 @@ using WebAPI.Entities;
 using WebAPI.Models;
 using WebAPI.Services;
 using System.Text.Json;
+using Microsoft.AspNetCore.JsonPatch;
 
 [ApiController]
 [Route("/events")]
@@ -88,4 +89,42 @@ public class EventsController : ControllerBase
         return Ok(mapper.Map<EventsDto>(mappedEvents));
     }
     
+    [Authorize(Roles = "Admin, Manager")]
+    [HttpPatch("{eventId}")]
+    public async Task<ActionResult<EventsDto>> UpdateEvent(
+        string eventId,
+        JsonPatchDocument<UpdateEventsDto> eventDto
+    ) {
+        var user = userRepo.GetAuthUser();
+
+        if(user == null){
+            return Unauthorized();
+        }
+
+        var events = await eventRepo.GetValueByExpression(e => e.Id == new Guid(eventId) && e.OwnerId == new Guid(user));
+
+        if(events == null){
+            return NotFound();
+        }
+        
+        var mappedEvents = mapper.Map<UpdateEventsDto>(events);
+
+        eventDto.ApplyTo(mappedEvents, ModelState);
+
+        if(!ModelState.IsValid){
+            return BadRequest(ModelState);
+        }
+
+        if(!TryValidateModel(mappedEvents)){
+            return BadRequest(ModelState);
+        }
+
+        var updatedEvents = mapper.Map(mappedEvents, events);
+
+        await eventRepo.SaveChangesAsync();
+
+
+
+        return Ok(mapper.Map<EventsDto>(updatedEvents));
+    }
 }
