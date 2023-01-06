@@ -15,11 +15,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <ToastContext>
       <AuthContext>
         <EventContext>
-          <CategoryContext>
             <Container>
               <Component {...pageProps} />
             </Container>
-          </CategoryContext>
         </EventContext>
       </AuthContext>
     </ToastContext>

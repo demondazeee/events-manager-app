@@ -2,6 +2,7 @@ import {useContext, useEffect, useState} from "react"
 import styled from "styled-components"
 import {UserDataBody, UserDataWithEvents} from "../../../hooks/useAuth"
 import {authContext} from "../../../store/AuthContext"
+import CategoryContext from "../../../store/CategoryContext"
 import {eventContext} from "../../../store/EventContext"
 import { UserRole } from "../../../types/user-role"
 import {PrimaryButton} from "../../elements/Buttons"
@@ -63,7 +64,14 @@ const Profile = ({data} : ProfileProp) => {
     return (
         <>
             <PageContainer mainColumn={
-                    loggedInUser ?. userData.username == username && event ?. isCreateMode ? <CreateEvents/>: <EventList eventData={
+                    loggedInUser ?. userData.username == username && event ?. isCreateMode ? 
+                    <>
+                        <CategoryContext>
+                            <CreateEvents />
+                        </CategoryContext>
+                    </>
+                    
+                    : <EventList eventData={
                         event !.eventsData
                     }/>
                 }
