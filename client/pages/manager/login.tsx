@@ -11,7 +11,7 @@ const ManagerLoginPage = () => {
     return (
         <>
             <PageContainer 
-                firstColumn={<Login loginPath="manager"
+                firstColumn={<Login loginTitle="Login as Manager" loginPath="manager"
                  />}
             />
         </>
