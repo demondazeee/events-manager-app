@@ -8,6 +8,7 @@ public class EventsProfile : Profile
     {
         CreateMap<EventsDto, Events>();
         CreateMap<CreateEventsDto, Events>();
+        CreateMap<UpdateEventsDto, Events>();
         CreateMap<Events, EventsDto>()
         .ForMember(dest => dest.OwnerName, opt=>opt.MapFrom(src => src.Owner!.Username));
     }
