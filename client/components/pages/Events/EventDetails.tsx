@@ -1,7 +1,7 @@
 import Link from "next/link"
 import styled from "styled-components"
 import {EventsDataBody} from "../../../hooks/useEvents"
-import {H2, H3} from "../../elements/Typography"
+import {H2, H3, P} from "../../elements/Typography"
 import { Card } from "../../layouts/Card"
 import PageContainer from "../../layouts/PageContainer"
 import parse from 'html-react-parser'
@@ -40,6 +40,9 @@ const HeaderImage = styled.img `
 
 
 const EventDescriptionContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
     font-size: initial;
 `
 
@@ -50,8 +53,10 @@ const EventItemFooter = styled.footer `
 
 
 const EventDetails = ({data} : EventItemProps) => {
-    const {id, title, description, createdAt, ownerName} = data;
+    const {id, title, description, createdAt, fromDate, toDate, ownerName} = data;
     const date = new Date(createdAt)
+    const from = new Date(fromDate)
+    const to = new Date(toDate)
 
     return (
         <>
@@ -64,17 +69,18 @@ const EventDetails = ({data} : EventItemProps) => {
                         <H2>{title}</H2>
                         
                         <EventItemFooter>
-                            <p>{
-                                date.toDateString()
-                            }</p>
-                            <p>Posted By:
+                            <P>{
+                               `From: ${from.toDateString()} - To: ${to.toDateString()}`
+                            }</P>
+                            <P>Posted By:
                                 <Link href={
                                     `/profile/${ownerName}`
                                 }>
                                     {ownerName}</Link>
-                            </p>
+                            </P>
                         </EventItemFooter>
                         <EventDescriptionContainer>
+                            <H3>About the Event:</H3>
                             {parse(description)}
                         </EventDescriptionContainer>
                     </EventContainer>
