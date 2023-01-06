@@ -2,6 +2,7 @@ import Link from "next/link"
 import { useContext, useReducer } from "react"
 import styled from "styled-components"
 import { authContext } from "../../../store/AuthContext"
+import { LoginComponentProps } from "../../../types/Login"
 import { PrimaryButton } from "../../elements/Buttons"
 import { Input } from "../../elements/Inputs"
 import { H2, H3, P } from "../../elements/Typography"
@@ -96,14 +97,14 @@ const reducerFn = (state: State, action: Action) => {
     return defaultState
 }
 
-const Login = ({loginPath}: {loginPath: string}) => {
+const Login = ({loginPath, loginTitle}: LoginComponentProps) => {
     const auth = useContext(authContext)
     const [state, dispatchFn] = useReducer(reducerFn, defaultState)
 
     return (
         <>
            <LoginFormContainer>
-                    <H3>Login</H3>
+                    <H3>{loginTitle || 'Login'}</H3>
                    <LoginForm>
                         <FormInputs>
                             <FormInputContainer>
