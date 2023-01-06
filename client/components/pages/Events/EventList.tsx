@@ -1,7 +1,8 @@
 import styled from "styled-components"
 import { EventsDataBody } from "../../../hooks/useEvents"
 import { UL } from "../../elements/Lists"
-import { H3 } from "../../elements/Typography"
+import { H2, H3 } from "../../elements/Typography"
+import { Card } from "../../layouts/Card"
 import {ContainerLayout} from '../../layouts/Container'
 import EventItem from "./EventItem"
 
@@ -20,7 +21,11 @@ const EventListContainer = styled(UL)`
 const EventList = ({eventData}: EventListProp) => {
     return (
         <>
+            
             <EventListContainer>
+            <Card>
+                <H2>Filter</H2>
+            </Card>
                 {eventData.length <= 0 ? 
                 <H3>No Data : (</H3>
                 :
