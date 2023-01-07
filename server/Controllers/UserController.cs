@@ -26,6 +26,7 @@ public class UserController : AuthBaseController
     [HttpGet("{userName}")]
     public async Task<ActionResult<UserDetailWithEventsDto>> GetUserByUsername(
         string userName,
+        bool IsClosed = false,
         int eventPageNumber = 1,
         int eventPageSize=10
     ) {
@@ -35,7 +36,7 @@ public class UserController : AuthBaseController
             return NotFound();
         }
 
-        var (events, pageMetadata) = await eventRepo.GetEvents(userName, "", eventPageNumber, eventPageSize);
+        var (events, pageMetadata) = await eventRepo.GetEvents(userName, "", IsClosed, eventPageNumber, eventPageSize);
         if(events == null) {
             return NotFound();
         }

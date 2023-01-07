@@ -20,6 +20,7 @@ public class EventsRepository : RepositoryBase<Events>, IEventsRepository
     public async Task<(IEnumerable<Events>, PaginationMetadata)> GetEvents(
         string? userName, 
         string? userId,
+        bool isClosed,
         int pageNumber,
         int pageSize
         )
@@ -49,6 +50,7 @@ public class EventsRepository : RepositoryBase<Events>, IEventsRepository
        );
 
         var result = await collection
+        .Where(e => e.IsClosed == isClosed)
         .Include(x => x.Owner)
         .OrderByDescending(x => x.CreatedAt)
         .Skip(pageSize * (pageNumber - 1))
