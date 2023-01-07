@@ -1,18 +1,29 @@
 import { GetServerSideProps } from "next";
+import { H2, H3, H4 } from "../../components/elements/Typography";
+import { Card } from "../../components/layouts/Card";
 import PageContainer from "../../components/layouts/PageContainer";
+import Category from "../../components/pages/Category/Category";
 import EventList from "../../components/pages/Events/EventList";
+import { CategoryDataBody } from "../../hooks/useCategory";
 import { EventsDataBody } from "../../hooks/useEvents";
 
 type EventsPageProp = {
-    data: EventsDataBody[]
+    eventData: EventsDataBody[],
+    categoryData: CategoryDataBody[]
 }
 
 
-const Events = ({data}: EventsPageProp) => {
+const Events = ({eventData, categoryData}: EventsPageProp) => {
     return (
         <>
-            <PageContainer mainColumn={
-                <EventList eventData={data} />
+            <PageContainer
+            firstColumn={
+                <>
+                   <Category data={categoryData} />
+                </>
+            }
+            mainColumn={
+                <EventList eventData={eventData} />
             } />
         </>
     )
@@ -21,22 +32,27 @@ const Events = ({data}: EventsPageProp) => {
 export const getServerSideProps: GetServerSideProps = async () => {
 
     const url = process.env.NEXT_PUBLIC_SERVER
-    const res = await fetch(`${url}/events`)
+    const eventRes = await fetch(`${url}/events`)
+    const categoryRes = await fetch(`${url}/category`)
 
-    if(res.ok) {
-        const data = await res.json();
+
+    if(eventRes.ok && categoryRes.ok) {
+        const eventData = await eventRes.json();
+        const categoryData = await categoryRes.json();
 
         return {
-        props: {
-            data
-        }
+            props: {
+                eventData,
+                categoryData
+            }
         }
     }
 
 
     return {
         props: {
-        data: []
+            eventData: [],
+            categoryData: [],
         }
     }
 }
