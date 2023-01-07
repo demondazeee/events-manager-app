@@ -21,11 +21,7 @@ const EventListContainer = styled(UL)`
 const EventList = ({eventData}: EventListProp) => {
     return (
         <>
-            
             <EventListContainer>
-            <Card>
-                <H2>Filter</H2>
-            </Card>
                 {eventData.length <= 0 ? 
                 <H3>No Data : (</H3>
                 :
