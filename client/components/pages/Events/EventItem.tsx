@@ -5,7 +5,7 @@ import styled from "styled-components";
 import {EventsDataBody} from "../../../hooks/useEvents";
 import {NextLink} from "../../elements/Buttons";
 import {LI} from "../../elements/Lists";
-import {H3} from "../../elements/Typography";
+import {H3, P} from "../../elements/Typography";
 import {Card} from "../../layouts/Card";
 
 type EventItemProps = {
@@ -18,13 +18,12 @@ const EventCardContainer = styled(Card)`
     border-radius: 5px;
     transition: box-shadow .2s ease-out, 
     transform .2s ease-out;
-
+`
+const EvenTitle = styled(H3)`
     &:hover {
         cursor: pointer;
-        box-shadow: 6px 6px #000;
-        transform: translate(-6px, -6px);
+        text-decoration: underline;
     }
-
 `
 
 const EventContainer = styled.div `
@@ -55,28 +54,26 @@ const EventItem = ({data} : EventItemProps) => {
     const {id, title, createdAt, ownerName} = data;
     const date = new Date(createdAt)
     const {push} = useRouter()
-
+    // push(`/events/${id}`)
     return (
         <>
-            <LI onClick={() =>{
-                push(`/events/${id}`)
-            }}>
+            <LI>
                 <EventCardContainer>
                     <EventContainer>
-                        <H3>{title}</H3>
+                        <EvenTitle onClick={() => {push(`/events/${id}`)}}>{title}</EvenTitle>
                         <ImageContainer>
                             <HeaderImage src="/sample.jpg"/>
                         </ImageContainer>
                         <EventItemFooter>
-                            <p>{
+                            <P>{
                                 date.toDateString()
-                            }</p>
-                            <p>Posted By:
+                            }</P>
+                            <P>Posted By:
                                 <Link href={
                                     `/profile/${ownerName}`
                                 }>
                                     {ownerName}</Link>
-                            </p>
+                            </P>
                         </EventItemFooter>
                     </EventContainer>
                 </EventCardContainer>
