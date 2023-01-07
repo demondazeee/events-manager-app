@@ -5,7 +5,7 @@ const AdminLoginPage = () => {
     return (
         <>
             <PageContainer mainColumn={
-                <Login loginPath="admin" />
+                <Login loginPath="admin" loginTitle="Login as Admin" />
             } />
         </>
     )
