@@ -80,7 +80,7 @@ export interface useAuthBody {
 export const useAuth = () => {
     const [userData, setUserData] = useState<UserDataBody>({id: "", username: "", role: 0, accessToken: ""})
     const [isLoading, setIsLoading] = useState(false)
-    const [isLoggedIn, setIsLoggedIn] = useState(true)
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
     const {fetchUrl} = useFetch()
     const {toastMessage} = useContext(toastContext)
     const [showLogin, setShowLogin] = useState(false)
