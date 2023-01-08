@@ -3,7 +3,6 @@ import type { AppProps } from 'next/app'
 import Container from '../components/layouts/Container'
 import AuthContext from '../store/AuthContext'
 import EventContext from '../store/EventContext'
-import CategoryContext from '../store/CategoryContext'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ToastContext from '../store/ToastContext'
