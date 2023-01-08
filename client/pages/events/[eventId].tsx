@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next"
 import { H3 } from "../../components/elements/Typography"
-import EventDetails from "../../components/pages/Events/EventDetails"
+import EventDetails from "../../components/Events/EventDetails"
 import { EventsDataBody } from "../../hooks/useEvents"
 
 type EventDetailsPageProp = {

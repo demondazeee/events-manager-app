@@ -1,7 +1,8 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
-import Login from "../components/pages/Login/Login"
-import LoginModal from "../components/pages/Login/LoginModal"
+import LoginModal from "../components/Login/LoginModal"
 import { useAuth, useAuthBody } from "../hooks/useAuth"
+
+
 
 type AuthContextProp = {
     children: ReactNode

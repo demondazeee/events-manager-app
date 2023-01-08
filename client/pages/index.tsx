@@ -1,9 +1,9 @@
 import { GetServerSideProps, GetStaticProps } from "next"
 import styled from "styled-components"
 import { H3 } from "../components/elements/Typography"
+import EventList from "../components/Events/EventList"
 import { Card } from "../components/layouts/Card"
 import PageContainer from "../components/layouts/PageContainer"
-import EventList from "../components/pages/Events/EventList"
 import { EventsDataBody } from "../hooks/useEvents"
 
 type DataProp = {

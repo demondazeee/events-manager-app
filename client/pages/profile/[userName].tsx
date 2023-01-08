@@ -1,5 +1,5 @@
 import {GetServerSideProps} from "next"
-import Profile from "../../components/pages/Profile/Profile"
+import Profile from "../../components/Profile/Profile"
 import {UserDataWithEvents} from "../../hooks/useAuth"
 
 

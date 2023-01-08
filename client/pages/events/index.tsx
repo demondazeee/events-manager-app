@@ -1,11 +1,12 @@
 import { GetServerSideProps } from "next";
+import Category from "../../components/Category/Category";
 import { H2, H3, H4 } from "../../components/elements/Typography";
+import EventList from "../../components/Events/EventList";
 import { Card } from "../../components/layouts/Card";
 import PageContainer from "../../components/layouts/PageContainer";
-import Category from "../../components/pages/Category/Category";
-import EventList from "../../components/pages/Events/EventList";
 import { CategoryDataBody } from "../../hooks/useCategory";
 import { EventsDataBody } from "../../hooks/useEvents";
+
 
 type EventsPageProp = {
     eventData: EventsDataBody[],
