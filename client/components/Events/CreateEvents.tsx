@@ -1,12 +1,12 @@
 import {useContext, useReducer, useState} from "react"
 import styled from "styled-components"
-import {categoryContext} from "../../../store/CategoryContext"
-import {eventContext} from "../../../store/EventContext"
-import {PrimaryButton} from "../../elements/Buttons"
-import {Input, TextArea} from "../../elements/Inputs"
-import {Label} from "../../elements/Labels"
-import {Card} from "../../layouts/Card"
 import {Editor} from '@tinymce/tinymce-react';
+import { Card } from "../layouts/Card"
+import { Label } from "../elements/Labels"
+import { Input } from "../elements/Inputs"
+import { PrimaryButton } from "../elements/Buttons"
+import { eventContext } from "../../store/EventContext";
+import { categoryContext } from "../../store/CategoryContext";
 
 
 const CreateEventButton = styled(PrimaryButton)`

@@ -1,12 +1,14 @@
 import Link from "next/link"
-import { useContext, useReducer } from "react"
+import { useRouter } from "next/router"
+import { useContext, useEffect, useReducer } from "react"
 import styled from "styled-components"
-import { authContext } from "../../../store/AuthContext"
-import { LoginComponentProps } from "../../../types/Login"
-import { PrimaryButton } from "../../elements/Buttons"
-import { Input } from "../../elements/Inputs"
-import { H2, H3, P } from "../../elements/Typography"
-import Modal from "../../Modal/Modal"
+import { useFetch } from "../../hooks/useFetch"
+import { authContext } from "../../store/AuthContext"
+import { LoginComponentProps } from "../../types/Login"
+import { PrimaryButton } from "../elements/Buttons"
+import { Input } from "../elements/Inputs"
+import { H3, P } from "../elements/Typography"
+
 
 const LoginFormContainer = styled.div`
     min-width: 300px;
@@ -100,6 +102,35 @@ const reducerFn = (state: State, action: Action) => {
 const Login = ({loginPath, loginTitle}: LoginComponentProps) => {
     const auth = useContext(authContext)
     const [state, dispatchFn] = useReducer(reducerFn, defaultState)
+    const {push} = useRouter()
+    const {fetchUrl} = useFetch()
+    
+    const router = useRouter()
+    if(!auth) {
+        return <P>Loading</P>
+    }
+
+    useEffect(() => {
+        const refresh = async () =>{
+            const res = await fetchUrl({
+                paths: "user/refresh",
+                method: "POST"
+            })
+    
+            if(res == undefined){
+                console.log('error')
+            } else {
+                if(res.ok){
+                    const data = await res.json()
+
+                    router.push('/')
+                }
+            }
+        }
+        refresh()
+    }, [])
+
+    // console.log(auth.isLoggedIn)
 
     return (
         <>
@@ -135,7 +166,10 @@ const Login = ({loginPath, loginTitle}: LoginComponentProps) => {
                             }}>Login</PrimaryButton>
                             <PrimaryButton onClick={(e) => {
                                 e.preventDefault();
+                                
+                                loginPath != "admin" && loginPath != "manager" ? 
                                 auth?.showLoginHandler()
+                                : push('/')
                             }}>Cancel</PrimaryButton>
                         </FormActionContainer>
                    </LoginForm>

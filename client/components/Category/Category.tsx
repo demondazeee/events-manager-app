@@ -1,8 +1,8 @@
 import styled from "styled-components"
-import { CategoryDataBody } from "../../../hooks/useCategory"
-import { LI, UL } from "../../elements/Lists"
-import { H3, H4 } from "../../elements/Typography"
-import { Card } from "../../layouts/Card"
+import { CategoryDataBody } from "../../hooks/useCategory"
+import { LI, UL } from "../elements/Lists"
+import { H4 } from "../elements/Typography"
+import { Card } from "../layouts/Card"
 
 type CategoryProp = {
     data: CategoryDataBody[]

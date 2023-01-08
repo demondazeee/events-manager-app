@@ -1,10 +1,9 @@
 import Link from "next/link"
 import styled from "styled-components"
-import {EventsDataBody} from "../../../hooks/useEvents"
-import {H2, H3, P} from "../../elements/Typography"
-import { Card } from "../../layouts/Card"
-import PageContainer from "../../layouts/PageContainer"
 import parse from 'html-react-parser'
+import { Card } from "../layouts/Card"
+import { H2, H3, P } from "../elements/Typography"
+import { EventsDataBody } from "../../hooks/useEvents"
 
 
 

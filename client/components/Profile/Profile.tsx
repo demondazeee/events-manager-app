@@ -1,16 +1,16 @@
 import {useContext, useEffect, useState} from "react"
 import styled from "styled-components"
-import {UserDataBody, UserDataWithEvents} from "../../../hooks/useAuth"
-import {authContext} from "../../../store/AuthContext"
-import CategoryContext from "../../../store/CategoryContext"
-import {eventContext} from "../../../store/EventContext"
-import { UserRole } from "../../../types/user-role"
-import {PrimaryButton} from "../../elements/Buttons"
-import {H2, H3} from "../../elements/Typography"
-import {Card} from "../../layouts/Card"
-import PageContainer from "../../layouts/PageContainer"
+import { UserDataWithEvents } from "../../hooks/useAuth"
+import { authContext } from "../../store/AuthContext"
+import CategoryContext from "../../store/CategoryContext"
+import { eventContext } from "../../store/EventContext"
+import { UserRole } from "../../types/user-role"
+import { PrimaryButton } from "../elements/Buttons"
+import { H3, P } from "../elements/Typography"
 import CreateEvents from "../Events/CreateEvents"
 import EventList from "../Events/EventList"
+import { Card } from "../layouts/Card"
+import PageContainer from "../layouts/PageContainer"
 
 type ProfileProp = {
     data: UserDataWithEvents
@@ -88,7 +88,8 @@ const Profile = ({data} : ProfileProp) => {
                                 </UserProfileContainer>
                             </Card>
                             {
-                                UserRole.Member !== loggedInUser?.userData.role &&
+                                !loggedInUser ? <P>Loading...</P> :
+                                UserRole.Manager === loggedInUser?.userData.role &&
                                 loggedInUser?.userData.username == username &&
                                 <Card>
                                     <UserProfileContainer>

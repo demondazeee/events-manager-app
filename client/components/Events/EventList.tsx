@@ -1,9 +1,9 @@
 import styled from "styled-components"
-import { EventsDataBody } from "../../../hooks/useEvents"
-import { UL } from "../../elements/Lists"
-import { H2, H3 } from "../../elements/Typography"
-import { Card } from "../../layouts/Card"
-import {ContainerLayout} from '../../layouts/Container'
+import { EventsDataBody } from "../../hooks/useEvents"
+import { UL } from "../elements/Lists"
+import { H3 } from "../elements/Typography"
+import { Card } from "../layouts/Card"
+import { ContainerLayout } from "../layouts/Container"
 import EventItem from "./EventItem"
 
 type EventListProp = {
