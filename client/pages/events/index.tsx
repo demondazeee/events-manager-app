@@ -1,11 +1,13 @@
 import { GetServerSideProps } from "next";
+import { useContext, useEffect } from "react";
 import Category from "../../components/Category/Category";
-import { H2, H3, H4 } from "../../components/elements/Typography";
+import { H2, H3, H4, P } from "../../components/elements/Typography";
 import EventList from "../../components/Events/EventList";
 import { Card } from "../../components/layouts/Card";
 import PageContainer from "../../components/layouts/PageContainer";
 import { CategoryDataBody } from "../../hooks/useCategory";
 import { EventsDataBody } from "../../hooks/useEvents";
+import { eventContext } from "../../store/EventContext";
 
 
 type EventsPageProp = {
@@ -15,6 +17,16 @@ type EventsPageProp = {
 
 
 const Events = ({eventData, categoryData}: EventsPageProp) => {
+    const events = useContext(eventContext)
+
+    if(!events) {
+        return <P>Loading...</P>
+    }
+
+    useEffect(() => {
+        events.setDefaultData(eventData)
+    }, [])
+
     return (
         <>
             <PageContainer
@@ -24,7 +36,7 @@ const Events = ({eventData, categoryData}: EventsPageProp) => {
                 </>
             }
             mainColumn={
-                <EventList eventData={eventData} />
+                <EventList eventData={events.eventsData} />
             } />
         </>
     )
