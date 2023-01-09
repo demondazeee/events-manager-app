@@ -36,7 +36,7 @@ export interface useEventsBody {
     isLoading: boolean;
     eventsData: EventsDataBody[];
     setDefaultData: (data: EventsDataBody[]) => void;
-    fetchEvents: (data: EventsDataBodyInput) => Promise<void>;
+    fetchEvents: (category?: string) => Promise<void>;
     createEvent: (data: EventsDataBodyInput) => Promise<void>;
 }
 
@@ -59,9 +59,16 @@ export const useEvents = () => {
         setEventsData(data)
     }
 
-    const fetchEvents = async () => {
+    const fetchEvents = async (category?: string) => {
+
+        let paths = "events"
+
+        if(category){
+            paths = `events?category=${category}`
+        }
+
         const res = await fetchUrl({
-            paths: "events",
+            paths,
             method: "GET"
         })
         
