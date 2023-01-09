@@ -36,7 +36,7 @@ public class UserController : AuthBaseController
             return NotFound();
         }
 
-        var (events, pageMetadata) = await eventRepo.GetEvents(userName, "", IsClosed, eventPageNumber, eventPageSize);
+        var (events, pageMetadata) = await eventRepo.GetEvents(userName, "", "", IsClosed, eventPageNumber, eventPageSize);
         if(events == null) {
             return NotFound();
         }

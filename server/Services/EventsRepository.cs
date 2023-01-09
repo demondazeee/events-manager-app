@@ -20,6 +20,7 @@ public class EventsRepository : RepositoryBase<Events>, IEventsRepository
     public async Task<(IEnumerable<Events>, PaginationMetadata)> GetEvents(
         string? userName, 
         string? userId,
+        string? category,
         bool isClosed,
         int pageNumber,
         int pageSize
@@ -38,6 +39,11 @@ public class EventsRepository : RepositoryBase<Events>, IEventsRepository
             collection = collection
             .Where(x => x.Owner!.Id == new Guid(userId!))
             .Include(x => x.Owner)
+            .OrderByDescending(x => x.CreatedAt);
+       }
+       if(!string.IsNullOrWhiteSpace(category)){
+            collection = collection
+            .Where(x => x.Category == category)
             .OrderByDescending(x => x.CreatedAt);
        }
 
