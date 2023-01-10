@@ -1,6 +1,5 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import Container from '../components/layouts/Container'
 import AuthContext from '../store/AuthContext'
 import EventContext from '../store/EventContext'
 import { ToastContainer } from 'react-toastify';
@@ -14,9 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ToastContext>
       <AuthContext>
         <EventContext>
-            <Container>
-              <Component {...pageProps} />
-            </Container>
+          <Component {...pageProps} />
         </EventContext>
       </AuthContext>
     </ToastContext>
