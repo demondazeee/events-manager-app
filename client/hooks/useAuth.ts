@@ -120,7 +120,7 @@ export const useAuth = () => {
                         message: `Log In successfully! Welcome ${data.username}!`,
                         type: "success"
                     })
-                    push(`/profile/${data.username}`)
+                    push(`/admin/dashboard`)
                 }
                 if(isManager(data)) {
                     setUserData(data)
