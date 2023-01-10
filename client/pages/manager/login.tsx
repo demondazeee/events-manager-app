@@ -1,17 +1,22 @@
 import styled from "styled-components"
+import { ContainerLayout } from "../../components/layouts/Container"
 import PageContainer from "../../components/layouts/PageContainer"
 import Login from "../../components/Login/Login"
 
+const ManagerLoginLayout = styled(ContainerLayout)`
+    padding-top: 60px;
+    max-width: 500px;
+`
 
 
 const ManagerLoginPage = () => {
     
     return (
         <>
-            <PageContainer 
-                firstColumn={<Login loginTitle="Login as Manager" loginPath="manager"
-                 />}
-            />
+          <ManagerLoginLayout>
+          <Login loginTitle="Login as Manager" loginPath="manager"
+                 />
+          </ManagerLoginLayout>
         </>
     )
 }
