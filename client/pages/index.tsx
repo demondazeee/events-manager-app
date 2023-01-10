@@ -1,8 +1,10 @@
 import { GetServerSideProps, GetStaticProps } from "next"
 import styled from "styled-components"
+import Dashboard from "../components/Admin/Dashboard"
 import { H3 } from "../components/elements/Typography"
 import EventList from "../components/Events/EventList"
 import { Card } from "../components/layouts/Card"
+import Layout from "../components/layouts/Container"
 import PageContainer from "../components/layouts/PageContainer"
 import { EventsDataBody } from "../hooks/useEvents"
 
@@ -19,8 +21,8 @@ const IndexHeader = styled(Card)`
 const Home = ({data}: DataProp) => {
   return (
     <>
-
-       <PageContainer mainColumn={
+      <Layout title="Latest Events">
+      <PageContainer mainColumn={
         <>
           <IndexHeader>
             <H3>Latest Events 🌟</H3>
@@ -28,6 +30,7 @@ const Home = ({data}: DataProp) => {
           <EventList eventData={data} />
         </>
        } />
+      </Layout>
     </>
   )
 }

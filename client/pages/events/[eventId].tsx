@@ -1,6 +1,7 @@
 import { GetServerSideProps } from "next"
 import { H3 } from "../../components/elements/Typography"
 import EventDetails from "../../components/Events/EventDetails"
+import Layout from "../../components/layouts/Container"
 import { EventsDataBody } from "../../hooks/useEvents"
 
 type EventDetailsPageProp = {
@@ -16,7 +17,9 @@ const EventDetailsPage = ({data}: EventDetailsPageProp) => {
     
     return (
         <>
-            <EventDetails data={data} />
+            <Layout title={data.title}>
+                <EventDetails data={data} />
+            </Layout>
         </>
     )
 }

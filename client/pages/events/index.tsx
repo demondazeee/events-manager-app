@@ -4,6 +4,7 @@ import Category from "../../components/Category/Category";
 import { H2, H3, H4, P } from "../../components/elements/Typography";
 import EventList from "../../components/Events/EventList";
 import { Card } from "../../components/layouts/Card";
+import Layout from "../../components/layouts/Container";
 import PageContainer from "../../components/layouts/PageContainer";
 import { CategoryDataBody } from "../../hooks/useCategory";
 import { EventsDataBody } from "../../hooks/useEvents";
@@ -29,7 +30,8 @@ const Events = ({eventData, categoryData}: EventsPageProp) => {
 
     return (
         <>
-            <PageContainer
+           <Layout title="All Events">
+           <PageContainer
             firstColumn={
                 <>
                    <Category data={categoryData} />
@@ -38,6 +40,7 @@ const Events = ({eventData, categoryData}: EventsPageProp) => {
             mainColumn={
                 <EventList eventData={events.eventsData} />
             } />
+           </Layout>
         </>
     )
 }

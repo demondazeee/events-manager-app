@@ -1,4 +1,5 @@
 import {GetServerSideProps} from "next"
+import Layout from "../../components/layouts/Container"
 import Profile from "../../components/Profile/Profile"
 import {UserDataWithEvents} from "../../hooks/useAuth"
 
@@ -14,7 +15,9 @@ const ProfilePage = ({data} : ProfilePageProp) => {
 
     return (
         <>
-           <Profile data={data} />
+           <Layout title={data.username}>
+            <Profile data={data} />
+           </Layout>
         </>
     )
 }
