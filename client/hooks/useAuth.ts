@@ -37,7 +37,7 @@ type LoginUserProp = {
     userLoginInput: LoginMemberBody
 }
 
-const isAdmin = (data: unknown): data is AdminUser => {
+export const isAdmin = (data: unknown): data is AdminUser => {
     if(data != null && typeof data === "object"){
         if("role" in data) {
             return data.role === 0
@@ -47,7 +47,7 @@ const isAdmin = (data: unknown): data is AdminUser => {
     return false
 }
 
-const isManager = (data: unknown): data is ManagerUser => {
+export const isManager = (data: unknown): data is ManagerUser => {
     if(data != null && typeof data === "object"){
         if("role" in data) {
             return data.role === 1
@@ -56,7 +56,7 @@ const isManager = (data: unknown): data is ManagerUser => {
     return false
 }
 
-const isMember = (data: unknown): data is MemberUser => {
+export const isMember = (data: unknown): data is MemberUser => {
     if(data != null && typeof data === "object"){
         if("role" in data) {
             return data.role === 2
