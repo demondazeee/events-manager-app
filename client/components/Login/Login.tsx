@@ -2,6 +2,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useContext, useEffect, useReducer } from "react"
 import styled from "styled-components"
+import { isAdmin } from "../../hooks/useAuth"
 import { useFetch } from "../../hooks/useFetch"
 import { authContext } from "../../store/AuthContext"
 import { LoginComponentProps } from "../../types/Login"
@@ -121,8 +122,11 @@ const Login = ({loginPath, loginTitle}: LoginComponentProps) => {
                 console.log('error')
             } else {
                 if(res.ok){
-                    const data = await res.json()
+                    const data: unknown = await res.json()
 
+                    if(isAdmin(data)) {
+                        router.push('/admin/dashboard')
+                    }
                     router.push('/')
                 }
             }
