@@ -2,6 +2,13 @@ import styled from "styled-components"
 import { LI, UL } from "../elements/Lists"
 import { H2, H3 } from "../elements/Typography"
 import { Card } from "../layouts/Card"
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { FiLogOut } from "react-icons/fi";
+import { BiCategoryAlt } from "react-icons/bi";
+import { FaRegCalendarAlt, FaUsersCog, FaUsers } from "react-icons/fa";
+import { useContext } from "react"
+import { authContext } from "../../store/AuthContext"
+
 
 const DashboardContainer = styled.div`
     height: 100vh;
@@ -32,6 +39,11 @@ const SideBar_Menu = styled.nav`
 
 const SideBar_LinkButton = styled.a`
     font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    cursor: pointer;
 `
 
 const DashboardMain = styled.div`
@@ -56,7 +68,21 @@ const ChartContainer = styled(Card)`
     grid-column: 1 / span 3;
 `
 
+const e = [
+    {
+      name: 'January  12',
+        totalEvents: 23000
+    },
+    {
+      name: 'January  13',
+      totalEvents: 2300
+    },
+]
+
 const Dashboard = () => {
+    const auth  = useContext(authContext)
+
+
     return (
         <>
             <DashboardContainer>
@@ -66,19 +92,19 @@ const Dashboard = () => {
                         <SideBar_Menu>
                             <UL>
                                 <LI>
-                                    <SideBar_LinkButton>User Management</SideBar_LinkButton>
+                                    <SideBar_LinkButton><FaUsersCog />User Management</SideBar_LinkButton>
                                 </LI>
                                 <LI>
-                                    <SideBar_LinkButton>Events</SideBar_LinkButton>
+                                    <SideBar_LinkButton><FaRegCalendarAlt /> Events</SideBar_LinkButton>
                                 </LI>
                                 <LI>
-                                    <SideBar_LinkButton>Event Managers</SideBar_LinkButton>
+                                    <SideBar_LinkButton><FaUsers />Event Managers</SideBar_LinkButton>
                                 </LI>
                                 <LI>
-                                    <SideBar_LinkButton>Category</SideBar_LinkButton>
+                                    <SideBar_LinkButton><BiCategoryAlt />Category</SideBar_LinkButton>
                                 </LI>
                                 <LI>
-                                    <SideBar_LinkButton>Logout</SideBar_LinkButton>
+                                    <SideBar_LinkButton onClick={() => {auth?.logoutUser()}}><FiLogOut /> Logout</SideBar_LinkButton>
                                 </LI>
                             </UL>
                         </SideBar_Menu>
@@ -100,7 +126,24 @@ const Dashboard = () => {
                             </Card>
                            
                             <ChartContainer>
-                                <H3>Chart here</H3>
+                                <ResponsiveContainer width="100%" height={500}>
+                                    <BarChart width={500}
+                                     data={e} 
+                                     height={500}
+                                     margin={{
+                                        top: 5,
+                                        right: 30,
+                                        left: 20,
+                                        bottom: 5,
+                                      }}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Bar dataKey="totalEvents" fill="#8884d8" />
+                                    </BarChart>
+                                </ResponsiveContainer>
                             </ChartContainer>
                         </MainContainer>
                     </DashboardMainContainer>
