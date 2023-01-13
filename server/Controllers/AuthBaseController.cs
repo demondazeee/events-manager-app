@@ -92,17 +92,18 @@ public abstract class AuthBaseController : ControllerBase
         };
         mappedUser.Role = role;
         mappedUser.Password = Argon2.Hash(config);
-
-        var accessToken = userRepo.GenerateToken(mappedUser.Id, role);
-        var refreshToken = userRepo.GenerateToken(mappedUser.Id, role, true);
-        Response.Cookies.Append("rt", refreshToken, new () {
-            MaxAge = TimeSpan.FromDays(7),
-            HttpOnly = true
-        });
+    
 
         await userRepo.Create(mappedUser);
 
         var result = mapper.Map<U>(mappedUser);
+
+        var accessToken = userRepo.GenerateToken(result.Id, role);
+        var refreshToken = userRepo.GenerateToken(result.Id, role, true);
+        Response.Cookies.Append("rt", refreshToken, new () {
+            MaxAge = TimeSpan.FromDays(7),
+            HttpOnly = true
+        });
         result.AccessToken = accessToken;
 
         return Ok(result);
