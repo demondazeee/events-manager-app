@@ -27,14 +27,23 @@ export interface MemberUser extends UserDataWithEvents{
 
 }
 
-export type LoginMemberBody = {
+export interface LoginMemberBody  {
     username: string,
     password: string
 }
 
-type LoginUserProp = {
+export interface RegisterUserBody extends LoginMemberBody {
+    email: string
+}
+
+interface LoginUserProp {
     path: string,
     userLoginInput: LoginMemberBody
+}
+
+interface RegisterUserProp {
+    path: string,
+    userRegisterInput: RegisterUserBody
 }
 
 export const isAdmin = (data: unknown): data is AdminUser => {
@@ -73,6 +82,7 @@ export interface useAuthBody {
     isLoggedIn: boolean;
     userData: UserDataBody;
     loginUser:  ({ path, userLoginInput: { username, password } }: LoginUserProp) => Promise<void>
+    registerUser: ({ path, userRegisterInput: { username, password, email } }: RegisterUserProp) => Promise<void>,
     refreshToken:() => Promise<void>;
     logoutUser: () => Promise<void>;
 }
@@ -155,6 +165,70 @@ export const useAuth = () => {
         }
     }
 
+    const registerUser = async({path, userRegisterInput: {username, password, email}}: RegisterUserProp) => {
+        setIsLoading(true)
+        const res = await fetchUrl({
+            paths: `user/${path}/register`,
+            method: "POST",
+            fetchOptions: {
+                body: JSON.stringify({
+                    username,
+                    password,
+                    email
+                })
+            }
+        })
+
+        if(res == undefined){
+            console.log('zzzz')
+
+        } else {
+            if(res.ok){
+                const data: unknown = await res.json();
+
+                // if(isAdmin(data)){
+                //     setUserData(data)
+                //     setIsLoading(false)
+                //     setIsLoggedIn(true)
+                //     toastMessage({
+                //         message: `Registered successfully! Welcome ${data.username}!`,
+                //         type: "success"
+                //     })
+                //     push(`/admin/dashboard`)
+                // }
+                // if(isManager(data)) {
+                //     setUserData(data)
+                //     setIsLoading(false)
+                //     setIsLoggedIn(true)
+                //     toastMessage({
+                //         message: `Log In successfully! Welcome ${data.username}!`,
+                //         type: "success"
+                //     })
+                //     push('/')
+                // }
+                if(isMember(data)){
+                    setUserData(data)
+                    setIsLoading(false)
+                    setIsLoggedIn(true)
+                    toastMessage({
+                        message: `Registration Successful! Welcome ${data.username}!`,
+                        type: "success"
+                    })
+                    showLoginHandler()
+                    push('/')
+                }
+                
+            } else {
+                toastMessage({
+                    message: "Invalid Registration",
+                    type: "error"
+                })
+                setIsLoading(false)
+                
+            }
+        }
+    }
+
     const refreshToken = async () => {
         const res = await fetchUrl({
             paths: "user/refresh",
@@ -207,6 +281,7 @@ export const useAuth = () => {
         isLoggedIn,
         userData,
         loginUser,
+        registerUser,
         refreshToken,
         logoutUser
     }
