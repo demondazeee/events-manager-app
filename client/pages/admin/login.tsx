@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { P } from "../../components/elements/Typography"
 import { ContainerLayout } from "../../components/layouts/Container"
 import PageContainer from "../../components/layouts/PageContainer"
-import Login from "../../components/Login/Login"
+import Login from "../../components/Auth/Auth"
 import { authContext } from "../../store/AuthContext"
 
 const AdminLoginLayout = styled(ContainerLayout)`

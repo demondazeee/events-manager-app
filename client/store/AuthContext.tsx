@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from "react"
-import LoginModal from "../components/Login/LoginModal"
+import LoginModal from "../components/Auth/LoginModal"
 import { useAuth, useAuthBody } from "../hooks/useAuth"
 
 
@@ -17,7 +17,7 @@ export const authContext = createContext<AuthContextValue | null>(null)
 const AuthContext=  ({children}: AuthContextProp) => {
     const auth = useAuth()
 
-
+    
     useEffect(() => {
         auth.refreshToken()
         if(auth.isLoggedIn) {
