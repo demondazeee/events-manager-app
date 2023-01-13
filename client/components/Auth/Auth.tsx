@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useContext, useEffect, useReducer } from "react"
+import { useContext, useEffect, useReducer, useState } from "react"
 import styled from "styled-components"
 import { isAdmin } from "../../hooks/useAuth"
 import { useFetch } from "../../hooks/useFetch"
@@ -11,7 +11,7 @@ import { Input } from "../elements/Inputs"
 import { H3, P } from "../elements/Typography"
 
 
-const LoginFormContainer = styled.div`
+const AuthFormContainer = styled.div`
     min-width: 300px;
     background-color: #fff;
     padding: 3rem;
@@ -23,7 +23,7 @@ const LoginFormContainer = styled.div`
     }
 `
 
-const LoginForm = styled.form`
+const AuthForm = styled.form`
     display: flex;
     flex-direction: column;
     padding-bottom: 5rem;
@@ -38,7 +38,7 @@ const LoginFooterContainer = styled.footer`
     }
 `
 
-const RegisterLinkButton = styled.a`
+const AuthLinkButton = styled.a`
     text-decoration: underline;
     color: #E11845;
     font-weight: 600;
@@ -68,7 +68,9 @@ type State = {
     username: string,
     usernameIsValid: boolean,
     password: string,
-    passwordIsValid: boolean
+    passwordIsValid: boolean,
+    email: string,
+    emailIsValid: false
 }
 
 type Action = {
@@ -81,6 +83,8 @@ const defaultState: State = {
     usernameIsValid: false,
     password: "",
     passwordIsValid: false,
+    email: "",
+    emailIsValid: false,
 }
 
 const reducerFn = (state: State, action: Action) => {
@@ -96,12 +100,19 @@ const reducerFn = (state: State, action: Action) => {
                 ...state,
                 password: val
             }
+        case "EMAIL_INPUT":
+            return {
+                ...state,
+                email: val
+            }
     }
     return defaultState
 }
 
-const Login = ({loginPath, loginTitle}: LoginComponentProps) => {
+const Auth = ({loginPath, loginTitle}: LoginComponentProps) => {
+    const title = loginTitle || "Login"
     const auth = useContext(authContext)
+    const [registerMode, setRegisterMode] = useState(false)
     const [state, dispatchFn] = useReducer(reducerFn, defaultState)
     const {push} = useRouter()
     const {fetchUrl} = useFetch()
@@ -138,9 +149,9 @@ const Login = ({loginPath, loginTitle}: LoginComponentProps) => {
 
     return (
         <>
-           <LoginFormContainer>
-                    <H3>{loginTitle || 'Login'}</H3>
-                   <LoginForm>
+           <AuthFormContainer>
+                    <H3>{!registerMode ? title : "Register a User"}</H3>
+                   <AuthForm>
                         <FormInputs>
                             <FormInputContainer>
                                 <Input placeholder="Username"
@@ -156,18 +167,45 @@ const Login = ({loginPath, loginTitle}: LoginComponentProps) => {
                                 }}
                                 />
                             </FormInputContainer>
+                            {registerMode &&
+                            <FormInputContainer>
+                            <Input placeholder="Email" type="email" 
+                             onChange={(e) => {
+                                dispatchFn({val: e.target.value, type: "EMAIL_INPUT"})
+                            }}
+                            />
+                            </FormInputContainer>
+                            }
                         </FormInputs>
                         <FormActionContainer>
-                            <PrimaryButton onClick={(e) => {
-                                e.preventDefault();
-                                auth?.loginUser({
-                                    path: loginPath,
-                                   userLoginInput: {
-                                    username: state.username,
-                                    password: state.password
-                                   }
-                                })
-                            }}>Login</PrimaryButton>
+                            {
+                                !registerMode ?
+                                <PrimaryButton onClick={(e) => {
+                                    e.preventDefault();
+                                    auth.loginUser({
+                                        path: loginPath,
+                                       userLoginInput: {
+                                        username: state.username,
+                                        password: state.password
+                                       }
+                                    })
+                                }}>Login</PrimaryButton>
+                                :
+                                <PrimaryButton onClick={(e) => {
+                                    e.preventDefault();
+                                    auth.registerUser({
+                                        path: loginPath,
+                                        userRegisterInput: {
+                                            username: state.username,
+                                            password: state.password,
+                                            email: state.email
+                                        }
+                                    })
+                                }}>
+                                    Register
+                                </PrimaryButton>
+                                
+                            }
                             <PrimaryButton onClick={(e) => {
                                 e.preventDefault();
                                 
@@ -176,14 +214,18 @@ const Login = ({loginPath, loginTitle}: LoginComponentProps) => {
                                 : push('/')
                             }}>Cancel</PrimaryButton>
                         </FormActionContainer>
-                   </LoginForm>
+                   </AuthForm>
                   {loginPath != "admin" && 
                 <LoginFooterContainer>
-                   <P>New User? <RegisterLinkButton>Sign up FREE Now</RegisterLinkButton></P>
+                  {
+                     !registerMode ? 
+                     <P>New User? <AuthLinkButton onClick={() => {setRegisterMode(prev => !prev)}}>Sign up FREE Now</AuthLinkButton></P>
+                     : <P>Got an Account? <AuthLinkButton onClick={() => {setRegisterMode(prev => !prev)}}>Sign in HERE</AuthLinkButton></P>
+                  }
                 </LoginFooterContainer>}
-                </LoginFormContainer>
+            </AuthFormContainer>
         </>
     )
 }
 
-export default Login
+export default Auth
