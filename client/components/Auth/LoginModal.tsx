@@ -1,5 +1,5 @@
 import Modal from "../Modal/Modal"
-import Login from "./Login"
+import Login from "./Auth"
 
 const LoginModal = () => {
     return (
