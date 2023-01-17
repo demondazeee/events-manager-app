@@ -9,7 +9,8 @@ type AuthContextProp = {
 }
 
 interface AuthContextValue extends useAuthBody  {
-
+    showLogin: boolean
+    showLoginHandler: () => void
 }
 
 export const authContext = createContext<AuthContextValue | null>(null)
@@ -17,22 +18,9 @@ export const authContext = createContext<AuthContextValue | null>(null)
 const AuthContext=  ({children}: AuthContextProp) => {
     const auth = useAuth()
 
-    
-    useEffect(() => {
-        auth.refreshToken()
-        if(auth.isLoggedIn) {
-            const interval = setInterval(() => {
-                auth.refreshToken()
-            }, 1000 * 60 * 2)
-
-            return () =>  {
-                clearInterval(interval)
-            }
-        }
-    }, [auth.isLoggedIn])
 
     const contextValue = {
-        ...auth
+        ...auth,
     }
 
 
