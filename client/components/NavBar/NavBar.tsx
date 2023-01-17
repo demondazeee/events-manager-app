@@ -6,7 +6,7 @@ import { authContext } from "../../store/AuthContext";
 import { eventContext } from "../../store/EventContext";
 import { LinkButton, NextLink } from "../elements/Buttons";
 import { LI, UL } from "../elements/Lists";
-import { H2 } from "../elements/Typography";
+import { H2, P } from "../elements/Typography";
 import { ContainerLayout } from "../layouts/Container";
 
 const HeaderContainer = styled.header`
@@ -47,12 +47,11 @@ const AuthMenuLists = styled(UL)`
 
 `
 
-
-
 const NavBar = () => {
     const auth = useContext(authContext)
     const event = useContext(eventContext)
 
+    if(auth == null) {return <P>Loading...</P>}
     const router = useRouter()
     return (
         <>
@@ -77,24 +76,24 @@ const NavBar = () => {
                         </NavMenuContainer>
                         <AuthContainer>
                             <AuthMenuLists>
-                                {auth?.isLoading ? 
+                                {auth.refresh.isLoading ? 
                                 <>
                                     <LI>
-                                        <p>Loading...</p>
+                                        <P>Loading...</P>
                                     </LI>
                                 </>
                                 :
-                                auth?.isLoggedIn ? 
+                                auth.isLoggedIn ? 
                                 <>
                                     <LI>
-                                        <NextLink path={`/profile/${auth?.userData.username}`}>Profile</NextLink>
+                                        <NextLink path={`/profile/${auth.userData?.username}`}>Profile</NextLink>
                                     </LI>
                                     <LI>
                                         <LinkButton onClick={(e)=> {
                                             e.preventDefault();
-                                            auth?.logoutUser()
+                                            auth.logout.mutate()
                                             event?.setCreateModeHandler(false)
-                                        }}>Logout</LinkButton>
+                                        }}>{auth.logout.isLoading ? "Loading..." : "Logout"}</LinkButton>
                                     </LI>
                                 </>
                                 :
