@@ -13,15 +13,24 @@ const AdminLoginLayout = styled(ContainerLayout)`
 `
 
 const AdminLoginPage = () => {
+    const auth = useContext(authContext)
+    const router = useRouter()
 
+    if(auth == null) {return <P>Loading...</P>}
 
-    return (
-        <>
-           <AdminLoginLayout>
-            <Login loginPath="admin" loginTitle="Login as Admin" />
-           </AdminLoginLayout>
-        </>
-    )
+    if(auth.refresh.isLoading) {return <P>Loading....</P>}
+
+    if(auth.isLoggedIn)
+    {router.push('/dashboard')}
+    else {
+        return (
+            <>
+            <AdminLoginLayout>
+                <Login loginPath="admin" loginTitle="Login as Admin" />
+            </AdminLoginLayout>
+            </>
+        )
+    }
 }
 
 
