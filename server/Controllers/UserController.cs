@@ -98,7 +98,7 @@ public class UserController : AuthBaseController
         return await RegisterUser<CreateMemberDto, MemberDto>(memberDto, UserRole.Member);
     }
 
-    [HttpPost("refresh")]
+    [HttpGet("refresh")]
     public async Task<ActionResult<UserDetailDto>> RefreshToken()
     {
         return await RefreshUserToken<UserDetailDto>();
