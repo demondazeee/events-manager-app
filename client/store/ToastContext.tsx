@@ -1,9 +1,9 @@
-import { createContext, ReactNode } from "react"
-import { Theme, TypeOptions, toast } from "react-toastify"
+import { createContext, ReactNode } from 'react';
+import toast from 'react-hot-toast';
 
 type ToastOption = {
     message: string,
-    type: TypeOptions
+    toastType: string
 }
 
 type ToastContextProp = {
@@ -11,22 +11,36 @@ type ToastContextProp = {
 }
 
 type ToastContextValue = {
-    toastMessage: ({message, type}: ToastOption) => void
+    toastMessage: ({message}: ToastOption) => void
 }
 
 
 export const toastContext = createContext<ToastContextValue>({
-    toastMessage: ({message, type}: ToastOption) => {}
+    toastMessage: ({message, toastType}: ToastOption) => {}
 })
 
 
 const ToastContext = ({children}: ToastContextProp) => {
 
-    const toastMessage = ({message,  type}: ToastOption) => {
-        toast(message, {
-            theme: "dark",
-            type
-        })
+    const toastMessage = ({message, toastType}: ToastOption) => {
+        if(toastType == "success") {
+            toast.success(message, {
+                position: "top-right",
+                style: {
+                    fontSize: "1.5rem"
+                },
+                duration: 4000
+            })
+        }
+        if(toastType == "error") {
+            toast.error(message, {
+                position: "top-right",
+                style: {
+                    fontSize: "1.5rem"
+                },
+                duration: 4000
+            })
+        }
     }
 
 
