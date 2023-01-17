@@ -6,7 +6,7 @@ import EventList from "../components/Events/EventList"
 import { Card } from "../components/layouts/Card"
 import Layout from "../components/layouts/Container"
 import PageContainer from "../components/layouts/PageContainer"
-import { EventsDataBody } from "../hooks/useEvents"
+import { EventsDataBody } from "../types/events"
 
 type DataProp = {
   data: EventsDataBody[]

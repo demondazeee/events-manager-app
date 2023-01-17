@@ -1,7 +1,8 @@
 import {GetServerSideProps} from "next"
 import Layout from "../../components/layouts/Container"
 import Profile from "../../components/Profile/Profile"
-import {UserDataWithEvents} from "../../hooks/useAuth"
+import { UserDataWithEvents } from "../../types/auth"
+
 
 
 type ProfilePageProp = {
