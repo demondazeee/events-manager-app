@@ -6,7 +6,9 @@ import { Label } from "../elements/Labels"
 import { Input } from "../elements/Inputs"
 import { PrimaryButton } from "../elements/Buttons"
 import { eventContext } from "../../store/EventContext";
-import { categoryContext } from "../../store/CategoryContext";
+import { P } from "../elements/Typography";
+import { useQuery } from "react-query";
+import { categoryApi } from "../../hooks/useCategory/api";
 
 
 const CreateEventButton = styled(PrimaryButton)`
@@ -51,7 +53,7 @@ const CreateEventCategoryContainer = styled.div`
 const CreateEventRadioButtonContainer = styled.div`
     display: flex;
     justify-content: start;
-    gap: 2rem
+    gap: 2rem;
 `
 
 type State = {
@@ -126,11 +128,18 @@ const reducerFn = (state : State, action : Action) => {
 
 
 const CreateEvents = () => {
+    const {fetchEvents} = categoryApi()
     const [state, dispatchFn] = useReducer(reducerFn, defaultState)
     const event = useContext(eventContext)
-    const {categoryData} = useContext(categoryContext)
+    // const {categoryData} = useContext(categoryContext)
+    const category = useQuery(["category"], fetchEvents, {
+        retry: 1,
+        retryDelay: 500,
+        refetchOnWindowFocus: false
+    })
+    
 
-
+    if(event == null) {return <P>Loading...</P>}
     return (
         <>
             <CreateEventContainer>
@@ -199,30 +208,22 @@ const CreateEvents = () => {
             }/>
         <CreateEventActionContainer>
             <CreateEventCategoryContainer>
-                <Label htmlFor="isFree">Select an Event Category</Label>
-                <select defaultValue={
-                        state.category
-                    }
-                    onChange={
-                        (e) => {
-                            dispatchFn({val: e.target.value, type: "CATEGORY_INPUT"})
-                        }
-                }>
-                    {
-                    categoryData.map(c => (
-                        <option key={
-                                c.id
-                            }
-                            value={
-                                c.name
-                        }>
-                            {
-                            c.name
-                        }</option>
-                    ))
-                }
-                    <option value="Others">Others</option>
-                </select>
+               {category.isLoading ? <P>Loading...</P> :
+               category.isError || category.data == null ?
+               <P>Error fetching Categories :(</P>
+               :
+               (
+                <>
+                     <Label htmlFor="isFree">Select an Event Category</Label>
+                    <select defaultValue={state.category} onChange={
+                            (e) => {
+                                dispatchFn({val: e.target.value, type: "CATEGORY_INPUT"})
+                            }}>
+                            {category.data.map(c => (<option key={c.id} >{c.name}</option>))}
+                            <option>Others</option>
+                    </select>
+                </>
+               )}
             </CreateEventCategoryContainer>
             <CreateEventRadioButtonContainer>
                 <div>
@@ -259,7 +260,7 @@ const CreateEvents = () => {
         <CreateEventButton onClick={
             (e) => {
                 e.preventDefault()
-                event ?. createEvent({
+                event.create.mutate({
                     title: state.title,
                     description: state.description,
                     FromDate: new Date(state.from_date).toUTCString(),
@@ -269,11 +270,11 @@ const CreateEvents = () => {
                     IsFree: state.isFree == "Free"
                 })
             }
-        }>Submit Post</CreateEventButton>
+        }>{event.create.isLoading ? "Loading..." : "Submit Post"}</CreateEventButton>
         <CreateEventButton onClick={
             (e) => {
                 e.preventDefault();
-                event ?. setCreateModeHandler(false)
+                event.setCreateModeHandler(false)
             }
         }>Cancel</CreateEventButton>
     </CreateEventActionContainer>
