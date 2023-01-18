@@ -42,6 +42,11 @@ const CategoryItem = ({id, name}: CategoryDataBody) => {
         refetchOnWindowFocus: false,
         enabled: false,
         onSuccess: (data) => {
+            queryClient.setQueryData(['events'], old => {
+                if(isEvents(data)){
+                    return data
+                }
+            })
             event.setEventHandler(data!)
         }
     })
