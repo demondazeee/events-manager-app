@@ -26,6 +26,7 @@ export const useEvent = (category?: string,  initialData?: EventsDataBody[]) => 
         onSuccess: (data) => {
             queryClient.setQueryData(['events'], old => {
                 if(isEvents(old) && isEvent(data)){
+                    
                     return [data, ...old]
                 }
             })
@@ -34,7 +35,7 @@ export const useEvent = (category?: string,  initialData?: EventsDataBody[]) => 
             setCreateModeHandler(false)
         },
         onMutate: async newTodo => {
-            await queryClient.cancelQueries('todos')
+            await queryClient.cancelQueries('events')
         
             const previousEvents = queryClient.getQueryData('events')
         
