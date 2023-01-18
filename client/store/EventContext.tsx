@@ -1,5 +1,6 @@
-import { createContext, ReactNode, useEffect, useState } from "react"
-import { useEvents, useEventsBody } from "../hooks/useEvents";
+import { createContext, Dispatch, ReactNode, SetStateAction, useState} from "react"
+import { useEvent } from "../hooks/useEvents"
+import { EventsDataBody, useEventsBody } from "../types/events"
 
 type EventContext = {
     children: ReactNode
@@ -14,16 +15,17 @@ export const eventContext = createContext<EventContextValue | null>(null)
 
 
 const EventContext = ({children}: EventContext) => {
-    
-    const event = useEvents();
+    const event = useEvent();
+    const [eventData, setEventData] = useState<EventsDataBody[]>([])
 
-    // useEffect(() => {
-    //     console.log('hehe')
-    //     event.fetchEvents();
-    // }, [])
+    const setEventHandler = (data: EventsDataBody[]) => {
+        setEventData(data)
+    }
 
     const defaultValue = {
-        ...event
+        ...event,
+        setEventHandler,
+        eventData
     }
 
     return (
