@@ -1,7 +1,11 @@
+import { useContext } from "react"
+import { useQuery, useQueryClient } from "react-query"
 import styled from "styled-components"
-import { EventsDataBody } from "../../hooks/useEvents"
+import { useEvent } from "../../hooks/useEvents"
+import { eventContext } from "../../store/EventContext"
+import { EventsDataBody } from "../../types/events"
 import { UL } from "../elements/Lists"
-import { H3 } from "../elements/Typography"
+import { H3, P } from "../elements/Typography"
 import { Card } from "../layouts/Card"
 import { ContainerLayout } from "../layouts/Container"
 import EventItem from "./EventItem"
@@ -19,17 +23,22 @@ const EventListContainer = styled(UL)`
 
 
 const EventList = ({eventData}: EventListProp) => {
+
+
     return (
         <>
             <EventListContainer>
-                {eventData.length <= 0 ? 
-                <H3>No Data : (</H3>
-                :
-                eventData.map(e => {
-                    return (
-                        <EventItem key={e.id} data={e} />
-                    )
-                })}
+                {
+                    eventData.length == 0 ? "Loading..." :
+                    eventData.map(e => {
+                        return (
+                            <EventItem key={e.id} data={e} />
+                        )
+                    })
+                    
+
+                }
+
             </EventListContainer>
         </>
     )
