@@ -19,6 +19,7 @@ const IndexHeader = styled(Card)`
 `
 
 const Home = ({data}: DataProp) => {
+
   return (
     <>
       <Layout title="Latest Events">

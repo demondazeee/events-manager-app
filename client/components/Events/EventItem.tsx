@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { EventsDataBody } from "../../hooks/useEvents";
+import { EventsDataBody } from "../../types/events";
 import { LI } from "../elements/Lists";
 import { H3, P } from "../elements/Typography";
 import { Card } from "../layouts/Card";

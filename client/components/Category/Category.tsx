@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { CategoryDataBody } from "../../hooks/useCategory"
+import { CategoryDataBody } from "../../types/category"
 import { LI, UL } from "../elements/Lists"
 import { H4, P } from "../elements/Typography"
 import { Card } from "../layouts/Card"

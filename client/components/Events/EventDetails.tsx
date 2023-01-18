@@ -3,7 +3,7 @@ import styled from "styled-components"
 import parse from 'html-react-parser'
 import { Card } from "../layouts/Card"
 import { H2, H3, P } from "../elements/Typography"
-import { EventsDataBody } from "../../hooks/useEvents"
+import { EventsDataBody } from "../../types/events"
 
 
 
