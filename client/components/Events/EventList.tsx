@@ -24,7 +24,6 @@ const EventListContainer = styled(UL)`
 
 const EventList = ({eventData}: EventListProp) => {
 
-
     return (
         <>
             <EventListContainer>

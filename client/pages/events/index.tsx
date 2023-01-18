@@ -26,16 +26,20 @@ const Events = ({eventData, categoryData}: EventsPageProp) => {
     const queryClient = useQueryClient()
 
     if(event == null) {return <P>Loading...</P>}
+    if(!eventData) {return <P>Loading...</P>}
 
-    const eventsWithCategory = useQuery(["events"], () => fetchEvents(""), {
+    const eventsWithCategory = useQuery(["events"], () => fetchEvents(), {
+        initialData: eventData,
         retry: 1,
         retryDelay: 500,
         refetchOnWindowFocus: false,
-        enabled: false,
         onSuccess: (data) => {
-            if(isEvents(data)){
-                event.setEventHandler(data)
-            }
+            queryClient.setQueryData(["events"], ()=> {
+                if(isEvents(data)){
+                    event.setEventHandler(data)
+                    return data
+                }
+            })
         }
     })
     return (
@@ -48,7 +52,8 @@ const Events = ({eventData, categoryData}: EventsPageProp) => {
                 </>
             }
             mainColumn={
-               <EventList eventData={event.eventData} />
+                eventsWithCategory.isLoading || !eventsWithCategory.data ? <P>Loading..</P>:
+               <EventList eventData={eventsWithCategory.data} />
             } />
            </Layout>
         </>
