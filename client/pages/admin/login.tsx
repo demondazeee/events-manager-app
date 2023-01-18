@@ -21,7 +21,7 @@ const AdminLoginPage = () => {
     if(auth.refresh.isLoading) {return <P>Loading....</P>}
 
     if(auth.isLoggedIn)
-    {router.push('/dashboard')}
+    {router.push('/admin/dashboard')}
     else {
         return (
             <>
