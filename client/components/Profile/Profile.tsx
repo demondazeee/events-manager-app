@@ -1,10 +1,8 @@
 import {useContext, useEffect, useState} from "react"
 import styled from "styled-components"
-import { UserDataWithEvents } from "../../hooks/useAuth"
 import { authContext } from "../../store/AuthContext"
-import CategoryContext from "../../store/CategoryContext"
 import { eventContext } from "../../store/EventContext"
-import { UserRole } from "../../types/user-role"
+import { UserDataWithEvents, UserRole } from "../../types/auth"
 import { PrimaryButton } from "../elements/Buttons"
 import { H3, P } from "../elements/Typography"
 import CreateEvents from "../Events/CreateEvents"
@@ -53,27 +51,23 @@ const UserIcon = styled.img `
 
 
 const Profile = ({data} : ProfileProp) => {
-    const loggedInUser = useContext(authContext)
+    const auth = useContext(authContext)
     const {username, events} = data
     const event = useContext(eventContext)
-    useEffect(() => {
-        event ?. setDefaultData(events)
-    }, [])
+    if(auth == null) { return <P>Loading....</P>}
+    if(event == null) {return <P>Loading..</P>}
+
 
 
     return (
         <>
             <PageContainer mainColumn={
-                    loggedInUser ?. userData.username == username && event ?. isCreateMode ? 
+                    auth.userData?.username == username && event?.isCreateMode ? 
                     <>
-                        <CategoryContext>
-                            <CreateEvents />
-                        </CategoryContext>
+                        <CreateEvents />
                     </>
                     
-                    : <EventList eventData={
-                        event !.eventsData
-                    }/>
+                    : <EventList eventData={events}/>
                 }
                 lastColumn={
                     (
@@ -88,9 +82,9 @@ const Profile = ({data} : ProfileProp) => {
                                 </UserProfileContainer>
                             </Card>
                             {
-                                !loggedInUser ? <P>Loading...</P> :
-                                UserRole.Manager === loggedInUser?.userData.role &&
-                                loggedInUser?.userData.username == username &&
+                                auth.refresh.isLoading ? <P>Loading...</P> :
+                                UserRole.Manager === auth.userData?.role &&
+                                auth.userData.username == username &&
                                 <Card>
                                     <UserProfileContainer>
                                         <PrimaryButton onClick={
