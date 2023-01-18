@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+import { UseMutationResult, UseQueryResult } from "react-query";
 
 export type EventsDataBody = {
     id: string,
@@ -27,9 +29,29 @@ export type EventsDataBodyInput = {
 export interface useEventsBody {
     isCreateMode: boolean;
     setCreateModeHandler: (isCreate: boolean) => void;
-    isLoading: boolean;
-    eventsData: EventsDataBody[];
-    setDefaultData: (data: EventsDataBody[]) => void;
-    fetchEvents: (category?: string) => Promise<void>;
-    createEvent: (data: EventsDataBodyInput) => Promise<void>;
+    events: UseQueryResult<EventsDataBody[] | undefined, unknown>
+    create: UseMutationResult<unknown, unknown, EventsDataBodyInput, {
+        previousEvents: EventsDataBody[];
+    }>
+    setEventHandler: (data: EventsDataBody[]) => void
+    eventData: EventsDataBody[];
+}
+
+
+export const isEvent = (data: unknown): data is EventsDataBody => {
+    if(data != null && typeof data === "object"){
+        if("title" in data) {
+            return typeof data.title === "string"
+        }
+    }
+    
+    return false
+}
+
+export const isEvents = (data: unknown): data is EventsDataBody[] => {
+    if(data != null){
+        return typeof data === "object"
+    }
+    
+    return false
 }
