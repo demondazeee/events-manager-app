@@ -37,9 +37,7 @@ public class UserController : AuthBaseController
         }
 
         var (events, pageMetadata) = await eventRepo.GetEvents(userName, "", "", IsClosed, eventPageNumber, eventPageSize);
-        if(events == null) {
-            return NotFound();
-        }
+
 
         var result = mapper.Map<UserDetailWithEventsDto>(username);
         var mappedEvents = mapper.Map<IEnumerable<EventsDto>>(events);
