@@ -32,7 +32,7 @@ public class EventsController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<EventsDto>>> GetEvents(
-        string? name,
+        string? owner,
         string? userId,
         string? category,
         bool IsClosed = false,
@@ -41,7 +41,7 @@ public class EventsController : ControllerBase
 
     )
     {
-        var (result, pageMetadata) = await eventRepo.GetEvents(name, userId, category, IsClosed, pageNumber, pageSize);
+        var (result, pageMetadata) = await eventRepo.GetEvents(owner, userId, category, IsClosed, pageNumber, pageSize);
 
         var mapped = mapper.Map<IEnumerable<EventsDto>>(result);
         Response.Headers.Add("X-Pagination",  JsonSerializer.Serialize(pageMetadata));
