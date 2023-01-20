@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react"
 import { useQuery, useQueryClient } from "react-query"
 import styled from "styled-components"
-import { eventApi } from "../../hooks/useEvents/api"
+import { useFetchEvents } from "../../hooks/Events/useFetchEvents"
 import { authContext } from "../../store/AuthContext"
 import { eventContext } from "../../store/EventContext"
 import { UserDataWithEvents, UserRole } from "../../types/auth"
@@ -55,39 +55,31 @@ const UserIcon = styled.img `
 
 const Profile = ({data} : ProfileProp) => {
     const auth = useContext(authContext)
-    const {fetchEvents} = eventApi()
-    const queryClient = useQueryClient()
-    const {username, events} = data
-    const event = useContext(eventContext)
+    const {user, events} = data
+    const eventCtx = useContext(eventContext)
+    const eventData = useFetchEvents("", events)
+
     if(auth == null) { return <P>Loading....</P>}
-    if(event == null) {return <P>Loading..</P>}
+    if(eventCtx == null) {return <P>Loading..</P>}
 
 
     if(!events) {return <P>Loading...</P>}
 
-    const usersEvents = useQuery(["events"], () => fetchEvents(), {
-        initialData: events,
-        retry: 1,
-        retryDelay: 500,
-        refetchOnWindowFocus: false,
-        onSuccess: (data) => {
-            queryClient.setQueryData(["events"], ()=> {
-                if(isEvents(data)){
-                    event.setEventHandler(data)
-                    return data
-                }
-            })
-        }
-    })
+    let elem: JSX.Element
+    if(user.role == UserRole.Member) {
+        elem = <H3>No Events for member :(</H3>
+    } else {
+        elem = <EventList eventData={eventData.data!}/>
+    }
     return (
         <>
             <PageContainer mainColumn={
-                    auth.userData?.username == username && event?.isCreateMode ? 
+                    auth.userData?.username == user.username && eventCtx.isCreateMode ? 
                     <>
                         <CreateEvents />
                     </>
                     
-                    : usersEvents.isLoading || !usersEvents.data ? "Loading..." : <EventList eventData={usersEvents.data}/>
+                    : eventData.isLoading || !eventData.data ? "Loading..." :  elem
                 }
                 lastColumn={
                     (
@@ -98,18 +90,18 @@ const Profile = ({data} : ProfileProp) => {
                                     <UserIconContainer>
                                         <UserIcon src="/user-icon.png" alt="user-icon"/>
                                     </UserIconContainer>
-                                    <H3>{username}</H3>
+                                    <H3>{user.username}</H3>
                                 </UserProfileContainer>
                             </Card>
                             {
                                 auth.refresh.isLoading ? <P>Loading...</P> :
                                 UserRole.Manager === auth.userData?.role &&
-                                auth.userData.username == username &&
+                                auth.userData.username == user.username &&
                                 <Card>
                                     <UserProfileContainer>
                                         <PrimaryButton onClick={
                                             () => {
-                                                event ?. setCreateModeHandler(true)
+                                                eventCtx.setCreateModeHandler(true)
                                             }
                                         }>
                                             Create an Event
