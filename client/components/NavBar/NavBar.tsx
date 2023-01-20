@@ -50,9 +50,10 @@ const AuthMenuLists = styled(UL)`
 const NavBar = () => {
     const auth = useContext(authContext)
     const event = useContext(eventContext)
-
-    if(auth == null) {return <P>Loading...</P>}
     const router = useRouter()
+    
+    if(auth == null) {return <P>Loading...</P>}
+    
     return (
         <>
             <HeaderContainer>
