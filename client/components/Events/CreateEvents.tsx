@@ -9,6 +9,7 @@ import { eventContext } from "../../store/EventContext";
 import { P } from "../elements/Typography";
 import { useQuery } from "react-query";
 import { categoryApi } from "../../hooks/useCategory/api";
+import { useCreateEvent } from "../../hooks/Events/useCreateEvent";
 
 
 const CreateEventButton = styled(PrimaryButton)`
@@ -129,6 +130,7 @@ const reducerFn = (state : State, action : Action) => {
 
 const CreateEvents = () => {
     const {fetchEvents} = categoryApi()
+    const {mutate, isLoading} = useCreateEvent()
     const [state, dispatchFn] = useReducer(reducerFn, defaultState)
     const event = useContext(eventContext)
     // const {categoryData} = useContext(categoryContext)
@@ -260,7 +262,7 @@ const CreateEvents = () => {
         <CreateEventButton onClick={
             (e) => {
                 e.preventDefault()
-                event.create.mutate({
+                mutate({
                     title: state.title,
                     description: state.description,
                     FromDate: new Date(state.from_date).toUTCString(),
@@ -270,7 +272,7 @@ const CreateEvents = () => {
                     IsFree: state.isFree == "Free"
                 })
             }
-        }>{event.create.isLoading ? "Loading..." : "Submit Post"}</CreateEventButton>
+        }>{isLoading ? "Loading..." : "Submit Post"}</CreateEventButton>
         <CreateEventButton onClick={
             (e) => {
                 e.preventDefault();
