@@ -119,11 +119,12 @@ const Auth = ({loginPath, loginTitle} : LoginComponentProps) => {
     const [state, dispatchFn] = useReducer(reducerFn, defaultState)
     const {push} = useRouter()
     const {fetchUrl} = useFetch()
-
+    const router = useRouter()
+    
     if (auth == null) {
         return <P>Loading....</P>
     }
-    const router = useRouter()
+
 
     if(auth.refresh.isLoading) {
         return <P>Loading...</P>
@@ -168,15 +169,28 @@ const Auth = ({loginPath, loginTitle} : LoginComponentProps) => {
                 <PrimaryButton onClick={
                     (e) => {
                         e.preventDefault();
-                        auth.login.mutate({
-                            path: loginPath,
-                            userLoginInput: {
-                                username: state.username,
-                                password: state.password
-                            }
-                        });
+                        if(registerMode){
+                            auth.register.mutate({
+                                path: loginPath,
+                                userRegisterInput: {
+                                    username: state.username,
+                                    password: state.password,
+                                    email: state.email
+                                }
+                            })
+                        } else {
+                            auth.login.mutate({
+                                path: loginPath,
+                                userLoginInput: {
+                                    username: state.username,
+                                    password: state.password
+                                }
+                            });
+                        }
                     }
-                }>{auth.login.isLoading ? "Loading..." : "Login"}</PrimaryButton> 
+                }>
+                {registerMode && auth.register.isLoading ? "Loading..." : "Register"}
+                {!registerMode && auth.login.isLoading ? "Loading..." : "Login"}</PrimaryButton> 
                 <PrimaryButton onClick={
                     (e) => {
                         e.preventDefault();
@@ -187,21 +201,24 @@ const Auth = ({loginPath, loginTitle} : LoginComponentProps) => {
             </FormActionContainer>
         </AuthForm>
         {
-        loginPath != "admin" && <LoginFooterContainer> {
-            !registerMode ? <P>New User?
-                <AuthLinkButton onClick={
-                    () => {
-                        setRegisterMode(prev => !prev)
-                    }
-                }>Sign up FREE Now</AuthLinkButton>
-            </P> : <P>Got an Account?
-                <AuthLinkButton onClick={
-                    () => {
-                        setRegisterMode(prev => !prev)
-                    }
-                }>Sign in HERE</AuthLinkButton>
-            </P>
-        } </LoginFooterContainer>
+        loginPath != "admin" && 
+        <LoginFooterContainer> 
+            {
+                !registerMode ? <P>New User?
+                    <AuthLinkButton onClick={
+                        () => {
+                            setRegisterMode(prev => !prev)
+                        }
+                    }>Sign up FREE Now</AuthLinkButton>
+                </P> : <P>Got an Account?
+                    <AuthLinkButton onClick={
+                        () => {
+                            setRegisterMode(prev => !prev)
+                        }
+                    }>Sign in HERE</AuthLinkButton>
+                </P>
+            } 
+        </LoginFooterContainer>
     } </AuthFormContainer>
 </>
     )
