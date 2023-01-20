@@ -1,7 +1,6 @@
 import { useContext } from "react"
 import { useQuery, useQueryClient } from "react-query"
 import styled from "styled-components"
-import { useEvent } from "../../hooks/useEvents"
 import { eventContext } from "../../store/EventContext"
 import { EventsDataBody } from "../../types/events"
 import { UL } from "../elements/Lists"
