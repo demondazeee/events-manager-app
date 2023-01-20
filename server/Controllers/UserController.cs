@@ -71,7 +71,6 @@ public class UserController : AuthBaseController
         return await LoginUser<AuthManagerDto, ManagerDto>(authDto, UserRole.Manager);
     }
 
-    [Authorize(Roles = "Admin")]
     [HttpPost("manager/register")]
     public async Task<ActionResult<ManagerDto>> CreateManager(
         CreateManagerDto managerDto
