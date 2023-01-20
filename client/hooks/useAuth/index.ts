@@ -1,7 +1,8 @@
+import { useRouter } from "next/router";
 import { useContext, useState } from "react"
 import { useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryResult } from "react-query"
 import { toastContext } from "../../store/ToastContext";
-import { isAdmin, isManager, isMember, LoginUserProp, UserDataBody } from "../../types/auth"
+import { isAdmin, isManager, isMember, LoginUserProp, RegisterUserProp, UserDataBody } from "../../types/auth"
 import { authApi } from "./api"
 
 export interface useAuthBody {
@@ -9,6 +10,7 @@ export interface useAuthBody {
     userData: UserDataBody | undefined;
     refresh: UseQueryResult<unknown, unknown>;
     login: UseMutationResult<unknown, unknown, LoginUserProp, unknown>;
+    register: UseMutationResult<unknown, unknown, RegisterUserProp, unknown>
     logout: UseMutationResult<void, unknown, void, unknown>
     showLogin: boolean;
     showLoginHandler: () => void;
@@ -18,7 +20,7 @@ export const useAuth = () => {
     const [userData, setUserData] = useState<UserDataBody>({id: "",  username: "", accessToken: "", role: 0})
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [showLogin, setShowLogin] = useState(false)
-
+    const router = useRouter()
     const {toastMessage} = useContext(toastContext)
 
     const showLoginHandler = () => {
@@ -27,6 +29,7 @@ export const useAuth = () => {
     const {
         loginUser,
         refreshToken,
+        registerUser,
         logoutUser
     } = authApi()
 
@@ -60,10 +63,12 @@ export const useAuth = () => {
             if(isAdmin(data)) {
                 setUserData(data)
                 setIsLoggedIn(true)
+                toastMessage({message: `Login Success, Welcome ${data.username}!`, toastType: "success"})
             }
             if(isManager(data)){
                 setUserData(data)
                 setIsLoggedIn(true)
+                toastMessage({message: `Login Success, Welcome ${data.username}!`, toastType: "success"})
             }
             if(isMember(data)){
                 setUserData(data)
@@ -79,14 +84,41 @@ export const useAuth = () => {
         }
     })
 
+    const register = useMutation(registerUser, {
+        onSuccess: (data) => {
+            if(isAdmin(data)) {
+                setUserData(data)
+                setIsLoggedIn(true)
+                toastMessage({message: `Registration Success, Welcome ${data.username}!`, toastType: "success"})
+            }
+            if(isManager(data)){
+                setUserData(data)
+                setIsLoggedIn(true)
+                toastMessage({message: `Registration Success, Welcome ${data.username}!`, toastType: "success"})
+            }
+            if(isMember(data)){
+                setUserData(data)
+                setIsLoggedIn(true)
+                toastMessage({message: `Registration Success, Welcome ${data.username}!`, toastType: "success"})
+                showLoginHandler()
+            }
+        },
+        onError: (error) => {
+            if(error instanceof Error) {
+                toastMessage({message: "Invalid Registration", toastType: "error"})
+            }
+        }
+    })
+
     const logout = useMutation(logoutUser, {
         onSuccess: (data) => {
             setUserData({id: "",  username: "", accessToken: "", role: 0})
             setIsLoggedIn(false)
+            router.push('/')
         },
         onError: (error) => {
             if(error instanceof Error) {
-                setIsLoggedIn(false)
+                setIsLoggedIn(true)
             }
         }
     })
@@ -98,6 +130,7 @@ export const useAuth = () => {
         login,
         logout,
         showLogin,
-        showLoginHandler
+        showLoginHandler,
+        register
     }
 }
