@@ -92,6 +92,10 @@ public abstract class AuthBaseController : ControllerBase
         };
         mappedUser.Role = role;
         mappedUser.Password = Argon2.Hash(config);
+
+        if(UserRole.Manager == role) {
+            mappedUser.IsManagerVerified = false;
+        }
     
 
         await userRepo.Create(mappedUser);
