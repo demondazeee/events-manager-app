@@ -131,6 +131,24 @@ const Auth = ({loginPath, loginTitle} : LoginComponentProps) => {
     }
 
 
+    let submitText;
+    if(registerMode){
+        if(auth.register.isLoading) {
+            submitText = "Loading..."
+        } else {
+            submitText = "Register"
+        }
+    } else {
+        if(auth.login.isLoading) {
+            submitText = "Loading..."
+        } else {
+            submitText = "Login"
+        }
+    }
+
+    
+
+
     return (
         <>
             <AuthFormContainer>
@@ -188,9 +206,7 @@ const Auth = ({loginPath, loginTitle} : LoginComponentProps) => {
                             });
                         }
                     }
-                }>
-                {registerMode && auth.register.isLoading ? "Loading..." : "Register"}
-                {!registerMode && auth.login.isLoading ? "Loading..." : "Login"}</PrimaryButton> 
+                }>{submitText}</PrimaryButton> 
                 <PrimaryButton onClick={
                     (e) => {
                         e.preventDefault();
