@@ -16,7 +16,9 @@ public class UsersProfile: Profile
 
         CreateMap<Users, ManagerDto>();
         CreateMap<CreateManagerDto, Users>();
-        CreateMap<AuthManagerDto, Users>();    
+        CreateMap<AuthManagerDto, Users>();
+        CreateMap<Users, UpdateVerifyDto>();
+        CreateMap<UpdateVerifyDto, Users>();
 
         CreateMap<Users, MemberDto>();
         CreateMap<CreateMemberDto, Users>();

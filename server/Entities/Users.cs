@@ -25,6 +25,8 @@ public class Users
     [EmailAddress]
     public string Email { get; set; }
 
+    public bool? IsManagerVerified { get; set; }
+
     [Required]
     public UserRole Role { get; set; }
 
