@@ -14,17 +14,18 @@ export interface UserDataBody  {
     accessToken: string
 }
 
-export interface UserDataWithEvents extends UserDataBody {
+export interface UserDataWithEvents {
+    user: UserDataBody,
     events: EventsDataBody[]
 }
 
-export interface AdminUser extends UserDataWithEvents{
+export interface AdminUser extends UserDataBody{
 
 }
-export interface ManagerUser extends UserDataWithEvents{
+export interface ManagerUser extends UserDataBody{
 
 }
-export interface MemberUser extends UserDataWithEvents{
+export interface MemberUser extends UserDataBody{
 
 }
 
