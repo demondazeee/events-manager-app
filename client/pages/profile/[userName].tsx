@@ -16,7 +16,7 @@ const ProfilePage = ({data} : ProfilePageProp) => {
 
     return (
         <>
-           <Layout title={data.username}>
+           <Layout title={data.user.username}>
             <Profile data={data} />
            </Layout>
         </>
@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const url = process.env.NEXT_PUBLIC_SERVER
 
     const res = await fetch(`${url}/user/${
-        params ?. userName
+        params?.userName
     }`, {
         method: "GET",
         headers: {

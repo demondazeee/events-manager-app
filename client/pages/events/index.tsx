@@ -7,7 +7,7 @@ import EventList from "../../components/Events/EventList";
 import { Card } from "../../components/layouts/Card";
 import Layout from "../../components/layouts/Container";
 import PageContainer from "../../components/layouts/PageContainer";
-import { eventApi } from "../../hooks/useEvents/api";
+import { useFetchEvents } from "../../hooks/Events/useFetchEvents";
 import { eventContext } from "../../store/EventContext";
 import { CategoryDataBody } from "../../types/category";
 import { EventsDataBody, isEvents } from "../../types/events";
@@ -21,27 +21,10 @@ type EventsPageProp = {
 
 
 const Events = ({eventData, categoryData}: EventsPageProp) => {
-    const event = useContext(eventContext)
-    const {fetchEvents} = eventApi()
-    const queryClient = useQueryClient()
+    const {data, isLoading} = useFetchEvents("", eventData)
 
-    if(event == null) {return <P>Loading...</P>}
     if(!eventData) {return <P>Loading...</P>}
 
-    const eventsWithCategory = useQuery(["events"], () => fetchEvents(), {
-        initialData: eventData,
-        retry: 1,
-        retryDelay: 500,
-        refetchOnWindowFocus: false,
-        onSuccess: (data) => {
-            queryClient.setQueryData(["events"], ()=> {
-                if(isEvents(data)){
-                    event.setEventHandler(data)
-                    return data
-                }
-            })
-        }
-    })
     return (
         <>
            <Layout title="All Events">
@@ -52,8 +35,8 @@ const Events = ({eventData, categoryData}: EventsPageProp) => {
                 </>
             }
             mainColumn={
-                eventsWithCategory.isLoading || !eventsWithCategory.data ? <P>Loading..</P>:
-               <EventList eventData={eventsWithCategory.data} />
+                isLoading || !data ? <P>Loading..</P>:
+               <EventList eventData={data} />
             } />
            </Layout>
         </>

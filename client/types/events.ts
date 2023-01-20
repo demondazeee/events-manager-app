@@ -1,6 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-import { UseMutationResult, UseQueryResult } from "react-query";
-
 export type EventsDataBody = {
     id: string,
     headerImage: string,
@@ -29,12 +26,6 @@ export type EventsDataBodyInput = {
 export interface useEventsBody {
     isCreateMode: boolean;
     setCreateModeHandler: (isCreate: boolean) => void;
-    events: UseQueryResult<EventsDataBody[] | undefined, unknown>
-    create: UseMutationResult<unknown, unknown, EventsDataBodyInput, {
-        previousEvents: EventsDataBody[];
-    }>
-    setEventHandler: (data: EventsDataBody[]) => void
-    eventData: EventsDataBody[];
 }
 
 
