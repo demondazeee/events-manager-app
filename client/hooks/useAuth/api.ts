@@ -1,5 +1,5 @@
 import { useFetch } from "../useFetch"
-import { LoginUserProp, RegisterUserProp } from "../../types/auth"
+import { isAdmin, isManager, isMember, LoginUserProp, RegisterUserProp } from "../../types/auth"
 
 
 
@@ -105,6 +105,7 @@ export const authApi = () => {
             
             const data: unknown = await res.json()
             return data
+
         }
 
     
