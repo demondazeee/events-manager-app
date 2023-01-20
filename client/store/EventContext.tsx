@@ -1,5 +1,4 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useState} from "react"
-import { useEvent } from "../hooks/useEvents"
 import { EventsDataBody, useEventsBody } from "../types/events"
 
 type EventContext = {
@@ -15,17 +14,16 @@ export const eventContext = createContext<EventContextValue | null>(null)
 
 
 const EventContext = ({children}: EventContext) => {
-    const event = useEvent();
-    const [eventData, setEventData] = useState<EventsDataBody[]>([])
+    const [isCreateMode, setIsCreateMode] = useState(false)
 
-    const setEventHandler = (data: EventsDataBody[]) => {
-        setEventData(data)
+
+    const setCreateModeHandler = (isCreate: boolean) => {
+        setIsCreateMode(isCreate)
     }
 
     const defaultValue = {
-        ...event,
-        setEventHandler,
-        eventData
+        isCreateMode,
+        setCreateModeHandler
     }
 
     return (
