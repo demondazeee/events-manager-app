@@ -1,12 +1,8 @@
 import { useContext } from "react"
-import { useQuery, useQueryClient } from "react-query"
 import styled from "styled-components"
-import { categoryApi } from "../../hooks/useCategory/api"
-import { useEvent } from "../../hooks/useEvents"
-import { eventApi } from "../../hooks/useEvents/api"
+import { useFetchEvents } from "../../hooks/Events/useFetchEvents"
 import { eventContext } from "../../store/EventContext"
 import { CategoryDataBody } from "../../types/category"
-import { isEvents } from "../../types/events"
 import { LI } from "../elements/Lists"
 import { P } from "../elements/Typography"
 import { Card } from "../layouts/Card"
@@ -33,30 +29,17 @@ const CategoryItemContainer = styled(Card)`
 
 const CategoryItem = ({id, name}: CategoryDataBody) => {
     const event = useContext(eventContext)
+    const {data, isLoading, refetch} = useFetchEvents(name, undefined, false)
     if(event == null) {return <P>Loading..</P>}
-    const {fetchEvents} = eventApi()
-    const queryClient = useQueryClient()
-    const eventsWithCategory = useQuery(["events", name], () => fetchEvents("", name), {
-        retry: 1,
-        retryDelay: 500,
-        refetchOnWindowFocus: false,
-        enabled: false,
-        onSuccess: (data) => {
-            queryClient.setQueryData(['events'], old => {
-                if(isEvents(data)){
-                    return data
-                }
-            })
-            event.setEventHandler(data!)
-        }
-    })
-    if(eventsWithCategory == null) {return <P>Loading..</P>}
-    if(eventsWithCategory.isLoading) {return <P>Loading...</P>}
+    
+    
+    if(data == null) {return <P>Loading..</P>}
+    if(isLoading) {return <P>Loading...</P>}
 
 
     return ( 
         <LI onClick={() => {
-            eventsWithCategory.refetch()
+            refetch()
         }}>
             <CategoryItemContainer>
                 <P>{name}</P>
