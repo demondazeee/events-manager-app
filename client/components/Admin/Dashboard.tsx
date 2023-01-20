@@ -104,7 +104,7 @@ const Dashboard = () => {
                                     <SideBar_LinkButton><BiCategoryAlt />Category</SideBar_LinkButton>
                                 </LI>
                                 <LI>
-                                    <SideBar_LinkButton onClick={() => {auth?.logoutUser()}}><FiLogOut /> Logout</SideBar_LinkButton>
+                                    <SideBar_LinkButton onClick={() => {auth?.logout.mutate()}}><FiLogOut /> Logout</SideBar_LinkButton>
                                 </LI>
                             </UL>
                         </SideBar_Menu>
