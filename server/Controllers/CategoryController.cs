@@ -45,4 +45,23 @@ public class CategoryController : ControllerBase
 
         return Ok(mapper.Map<CategoryDto>(mapped));
     }
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{categoryId}")]
+    public async Task<ActionResult> DeleteCategory(
+        string categoryId
+    ) {
+        var category = await repo.GetValueByExpression(v => v.Id == new Guid(categoryId));
+
+        if(category == null) {
+            return NotFound(new {
+                errorMessage = "Category not found"
+            });
+        }
+
+        await repo.Delete(category);
+
+        return Ok(new {
+            message = "Category Deleted"
+        });
+    }
 }
