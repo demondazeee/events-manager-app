@@ -1,17 +1,18 @@
 import { GetServerSideProps } from "next";
 import { useContext, useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "react-query";
+import styled from "styled-components";
 import Category from "../../components/Category/Category";
 import { H2, H3, H4, P } from "../../components/elements/Typography";
 import EventList from "../../components/Events/EventList";
 import { Card } from "../../components/layouts/Card";
 import Layout from "../../components/layouts/Container";
 import PageContainer from "../../components/layouts/PageContainer";
+import Search from "../../components/Search";
 import { useFetchEvents } from "../../hooks/Events/useFetchEvents";
 import { eventContext } from "../../store/EventContext";
 import { CategoryDataBody } from "../../types/category";
 import { EventsDataBody, isEvents } from "../../types/events";
-
 
 
 type EventsPageProp = {
@@ -19,6 +20,11 @@ type EventsPageProp = {
     categoryData: CategoryDataBody[]
 }
 
+const EventsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+`
 
 const Events = ({eventData, categoryData}: EventsPageProp) => {
     const {data, isLoading} = useFetchEvents("", eventData)
@@ -36,7 +42,12 @@ const Events = ({eventData, categoryData}: EventsPageProp) => {
             }
             mainColumn={
                 isLoading || !data ? <P>Loading..</P>:
-               <EventList eventData={data} />
+               <>
+                    <EventsContainer>
+                        <Search />
+                        <EventList eventData={data} />
+                    </EventsContainer>
+               </>
             } />
            </Layout>
         </>
