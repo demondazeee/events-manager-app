@@ -8,8 +8,9 @@ import { PrimaryButton } from "../elements/Buttons"
 import { eventContext } from "../../store/EventContext";
 import { P } from "../elements/Typography";
 import { useQuery } from "react-query";
-import { categoryApi } from "../../hooks/useCategory/api";
+import { categoryApi } from "../../hooks/Category/api";
 import { useCreateEvent } from "../../hooks/Events/useCreateEvent";
+import { useGetCategory } from "../../hooks/Category/useGetCategory";
 
 
 const CreateEventButton = styled(PrimaryButton)`
@@ -129,16 +130,12 @@ const reducerFn = (state : State, action : Action) => {
 
 
 const CreateEvents = () => {
-    const {fetchEvents} = categoryApi()
+    const {fetchCategory} = categoryApi()
     const {mutate, isLoading} = useCreateEvent()
     const [state, dispatchFn] = useReducer(reducerFn, defaultState)
     const event = useContext(eventContext)
     // const {categoryData} = useContext(categoryContext)
-    const category = useQuery(["category"], fetchEvents, {
-        retry: 1,
-        retryDelay: 500,
-        refetchOnWindowFocus: false
-    })
+    const category = useGetCategory()
     
 
     if(event == null) {return <P>Loading...</P>}
