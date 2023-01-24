@@ -1,11 +1,12 @@
+'use client';
+
+import { useRouter } from "next/router"
 import {useContext, useEffect, useState} from "react"
-import { useQuery, useQueryClient } from "react-query"
 import styled from "styled-components"
 import { useFetchEvents } from "../../hooks/Events/useFetchEvents"
 import { authContext } from "../../store/AuthContext"
 import { eventContext } from "../../store/EventContext"
 import { UserDataWithEvents, UserRole } from "../../types/auth"
-import { isEvents } from "../../types/events"
 import { PrimaryButton } from "../elements/Buttons"
 import { H3, P } from "../elements/Typography"
 import CreateEvents from "../Events/CreateEvents"
@@ -58,6 +59,7 @@ const Profile = ({data} : ProfileProp) => {
     const {user, events} = data
     const eventCtx = useContext(eventContext)
     const eventData = useFetchEvents("", events)
+    const router = useRouter();
 
     if(auth == null) { return <P>Loading....</P>}
     if(eventCtx == null) {return <P>Loading..</P>}
@@ -96,7 +98,7 @@ const Profile = ({data} : ProfileProp) => {
                             {
                                 auth.refresh.isLoading ? <P>Loading...</P> :
                                 UserRole.Manager === auth.userData?.role &&
-                                auth.userData.username == user.username &&
+                                auth.userData.username == user.username ? 
                                 <Card>
                                     <UserProfileContainer>
                                         <PrimaryButton onClick={
@@ -105,6 +107,20 @@ const Profile = ({data} : ProfileProp) => {
                                             }
                                         }>
                                             Create an Event
+                                        </PrimaryButton> 
+                                    </UserProfileContainer>
+                                </Card>
+                                :
+                                UserRole.Admin === auth.userData?.role &&
+                                auth.userData.username == user.username &&
+                                <Card>
+                                    <UserProfileContainer>
+                                        <PrimaryButton onClick={
+                                            () => {
+                                                router.push('/admin/dashboard')
+                                            }
+                                        }>
+                                            Go to Dashboard
                                         </PrimaryButton> 
                                     </UserProfileContainer>
                                 </Card>
