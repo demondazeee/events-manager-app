@@ -27,9 +27,9 @@ const EventsContainer = styled.div`
 `
 
 const Events = ({eventData, categoryData}: EventsPageProp) => {
-    const {data, isLoading} = useFetchEvents("", eventData)
+    // const {data, isLoading} = useFetchEvents("", eventData)
 
-    if(!eventData) {return <P>Loading...</P>}
+    // if(!eventData) {return <P>Loading...</P>}
 
     return (
         <>
@@ -41,11 +41,16 @@ const Events = ({eventData, categoryData}: EventsPageProp) => {
                 </>
             }
             mainColumn={
-                isLoading || !data ? <P>Loading..</P>:
+                !eventData ? <P>Loading..</P>:
                <>
                     <EventsContainer>
                         <Search />
-                        <EventList eventData={data} />
+                        {
+                            eventData.length === 0 ? 
+                            <P>No Data</P>
+                            :
+                            <EventList eventData={eventData} />
+                        }
                     </EventsContainer>
                </>
             } />
@@ -54,10 +59,11 @@ const Events = ({eventData, categoryData}: EventsPageProp) => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const {params, query} = context
 
     const url = process.env.NEXT_PUBLIC_SERVER
-    const eventRes = await fetch(`${url}/events`)
+    const eventRes = await fetch(`${url}/events?category=${query.category || ""}`)
     const categoryRes = await fetch(`${url}/category`)
 
 

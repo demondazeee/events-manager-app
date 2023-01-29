@@ -24,6 +24,27 @@ public class UserController : AuthBaseController
         this.eventRepo = eventRepo;
     }
 
+
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserDetailDto>>> GetAdminUsers(
+        UserRole? role
+    ) {
+        var result = new List<UserDetailDto>();
+        if(role == UserRole.Admin) {
+            var users = await userRepo.GetUsersByRole(UserRole.Admin);
+            result = mapper.Map<List<UserDetailDto>>(users);
+        }
+
+        if(role == UserRole.Manager) {
+            var users = await userRepo.GetUsersByRole(UserRole.Manager);
+            result = mapper.Map<List<UserDetailDto>>(users);
+        }
+
+        return Ok(result);
+    }
+
     [HttpGet("{userName}")]
     public async Task<ActionResult<UserDetailWithEventsDto>> GetUserByUsername(
         string userName,
@@ -59,76 +80,7 @@ public class UserController : AuthBaseController
         });
     }
 
-    [HttpPost("admin/login")]
-    public async Task<ActionResult<AdminDto>> LoginAdmin(
-        AuthAdminDto adminDto
-    )
-    {
-        return await LoginUser<AuthAdminDto, AdminDto>(adminDto, UserRole.Admin);
-    }
 
-    [Authorize(Roles = "Admin")]
-    [HttpPost("admin/register")]
-    public async Task<ActionResult<AdminDto>> CreateAdmin(
-        CreateAdminDto adminDto
-    ) {
-        return await RegisterUser<CreateAdminDto, AdminDto>(adminDto, UserRole.Admin);
-    }
-
-    [HttpPost("manager/login")]
-    public async Task<ActionResult<ManagerDto>> LoginManager(
-        AuthManagerDto authDto
-    ) {
-        return await LoginUser<AuthManagerDto, ManagerDto>(authDto, UserRole.Manager);
-    }
-
-    [HttpPost("manager/register")]
-    public async Task<ActionResult<ManagerDto>> CreateManager(
-        CreateManagerDto managerDto
-    ) 
-    {
-        return await RegisterUser<CreateManagerDto, ManagerDto>(managerDto, UserRole.Manager);
-    }
-
-    [Authorize(Roles = "Admin")]
-    [HttpPatch("manager/verify/{userId}")]
-    public async Task<ActionResult<ManagerDto>> UpdateVerified (
-        string userId,
-        JsonPatchDocument<UpdateVerifyDto> userDto
-    ) 
-    {
-        var user = await userRepo.GetValueByExpression(v => v.Id == new Guid(userId));
-
-        if(user == null){
-            return NotFound(new {
-                errorMessage = "User Not found"
-            });
-        }
-
-        if(user.IsManagerVerified == true){
-            return BadRequest(new {
-                errorMessage = $"{user.Username} is already verified."
-            });
-        }
-
-        var managerToPatch = mapper.Map<UpdateVerifyDto>(user);
-
-        userDto.ApplyTo(managerToPatch, ModelState);
-
-        if(!TryValidateModel(managerToPatch)){
-            return BadRequest(ModelState);
-        }
-
-        if(!ModelState.IsValid){
-            return BadRequest(ModelState);
-        }
-
-        var result = mapper.Map(managerToPatch, user);
-
-        await userRepo.SaveChangesAsync();
-        
-        return Ok(mapper.Map<ManagerDto>(result));
-    }
 
     [HttpPost("member/login")]
     public async Task<ActionResult<MemberDto>> LoginMember(

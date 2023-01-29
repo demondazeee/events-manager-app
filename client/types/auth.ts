@@ -48,7 +48,12 @@ export interface RegisterUserProp {
     userRegisterInput: RegisterUserBody
 }
 
-
+export const isUsers = (data: unknown): data is UserDataBody[] => {
+    if(data != null && typeof data === "object") {
+        return "length" in data
+    }
+    return false
+}
 
 export const isAdmin = (data: unknown): data is AdminUser => {
     if(data != null && typeof data === "object"){

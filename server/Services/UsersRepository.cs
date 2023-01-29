@@ -63,4 +63,18 @@ public class UsersRepository : RepositoryBase<Users>, IUsersRepository
 
         return jwtToken;
     }
+
+    public async Task<IEnumerable<Users>> GetUsersByRole(UserRole role)
+    {
+       
+        var collection = _context.Users as IQueryable<Users>;
+
+
+        var result = await collection
+        .Where(v => v.Role == role)
+        .OrderByDescending(v => v.CreatedAt)
+        .ToListAsync();
+        
+        return result;
+    }
 }

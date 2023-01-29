@@ -84,7 +84,7 @@ public abstract class AuthBaseController : ControllerBase
     
      {
         var mappedUser = mapper.Map<Users>(adminDto);
-
+        mappedUser.CreatedAt = DateTime.UtcNow;
         var buffer = RandomNumberGenerator.GetBytes(128);
         var config = new Argon2Config() {
             Salt = buffer,
@@ -102,13 +102,15 @@ public abstract class AuthBaseController : ControllerBase
 
         var result = mapper.Map<U>(mappedUser);
 
-        var accessToken = userRepo.GenerateToken(result.Id, role);
-        var refreshToken = userRepo.GenerateToken(result.Id, role, true);
-        Response.Cookies.Append("rt", refreshToken, new () {
-            MaxAge = TimeSpan.FromDays(7),
-            HttpOnly = true
-        });
-        result.AccessToken = accessToken;
+        if(role != UserRole.Admin) {
+            var accessToken = userRepo.GenerateToken(result.Id, role);
+            var refreshToken = userRepo.GenerateToken(result.Id, role, true);
+            Response.Cookies.Append("rt", refreshToken, new () {
+                MaxAge = TimeSpan.FromDays(7),
+                HttpOnly = true
+            });
+            result.AccessToken = accessToken;
+        }
 
         return Ok(result);
     }

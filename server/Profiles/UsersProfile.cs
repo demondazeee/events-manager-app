@@ -10,6 +10,7 @@ public class UsersProfile: Profile
         CreateMap<Users, UserDetailWithEventsDto>()
          .ForMember(dest => dest.Events, opt=>opt.MapFrom(src => src.Events.ToList()));
 
+        CreateMap<Users, UserDetailDto>();
         CreateMap<Users, AdminDto>();
         CreateMap<CreateAdminDto, Users>();
         CreateMap<AuthAdminDto, Users>();

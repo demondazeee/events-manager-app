@@ -8,19 +8,19 @@ type ModalProp = {
 
 const Background = styled.div`
     position: fixed;
-    top: 0;
-    left: 0;
     height: 100vh;
     width: 100%;
     background-color: rgba(0,0,0,0.5);
     z-index: 1000;
+    justify-content: center;
 `
 
 const ModalContainer = styled.div`
     position: fixed;
-    top: 30%;
+    top: 0;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
+    padding-top: 50px;
     z-index: 1001;
 `
 

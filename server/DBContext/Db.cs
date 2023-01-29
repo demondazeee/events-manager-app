@@ -32,16 +32,17 @@ public class Db : DbContext
     {
 
         var buffer = RandomNumberGenerator.GetBytes(128);
-        var config = new Argon2Config() {
+        var argonConfig = new Argon2Config() {
             Salt = buffer,
-            Password = Encoding.UTF8.GetBytes("admin")
+            Password = Encoding.UTF8.GetBytes(config["Seed:Admin_Password"]!)
         };
         modelBuilder.Entity<Users>().HasData(
             new {
-                Id = new Guid("5ecc49fa-59c6-4286-ad91-d221c81dad2e"),
-                Username = "admin",
-                Password = Argon2.Hash(config),
-                Email = "admin@admin.com",
+                Id = new Guid(config["Seed:Admin_Id"]!),
+                Username = config["Seed:Admin_Username"],
+                Password = Argon2.Hash(argonConfig),
+                Email = config["Seed:Admin_Password"],
+                CreatedAt = DateTime.UtcNow,
                 Role = Entities.Users.UserRole.Admin
             }
         );

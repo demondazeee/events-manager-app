@@ -11,13 +11,6 @@ type EventItemProps = {
     data: EventsDataBody
 }
 
-const EventCardContainer = styled(Card)`
-    box-shadow: 0 0 0 0;
-    border: 2px solid #000;
-    border-radius: 5px;
-    transition: box-shadow .2s ease-out, 
-    transform .2s ease-out;
-`
 const EvenTitle = styled(H3)`
     &:hover {
         cursor: pointer;
@@ -57,7 +50,7 @@ const EventItem = ({data} : EventItemProps) => {
     return (
         <>
             <LI>
-                <EventCardContainer>
+                <Card>
                     <EventContainer>
                         <EvenTitle onClick={() => {push(`/events/${id}`)}}>{title}</EvenTitle>
                         <ImageContainer>
@@ -75,7 +68,7 @@ const EventItem = ({data} : EventItemProps) => {
                             </P>
                         </EventItemFooter>
                     </EventContainer>
-                </EventCardContainer>
+                </Card>
             </LI>
         </>
     )

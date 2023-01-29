@@ -23,6 +23,7 @@ const CategoryItemList = styled(UL)`
     display: flex;
     gap: 5px;
     flex-wrap: wrap;
+    
 `
 
 

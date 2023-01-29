@@ -2,6 +2,9 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import styled from "styled-components";
 import styles from './link.module.css'
+import { MdModeEditOutline, MdOutlineDeleteOutline } from "react-icons/md";
+
+
 
 export const PrimaryButton = styled.button`
     display: block;
@@ -69,6 +72,41 @@ export const NextLink = ({children, path}: NextLinkProp) => {
             <Link href={path} className={styles["next-link"]}>
                 {children}
             </Link>
+        </>
+    )
+}
+
+const IconButtonContainer = styled.div`
+    background-color: #E4E4E7;
+    border-radius: 100%;
+    padding: .5em;
+    cursor: pointer;
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+`
+
+type IconButtonProps = {
+    onClick?: () => void
+}
+
+export const EditIconButton = (props: IconButtonProps) => {
+    return (
+        <>
+            <IconButtonContainer {...props}>
+                <MdModeEditOutline size={20} />
+            </IconButtonContainer>
+        </>
+    )
+}
+
+export const DeleteIconButton = (props: IconButtonProps) => {
+    return (
+        <>
+            <IconButtonContainer {...props}>
+                <MdOutlineDeleteOutline size={20} />
+            </IconButtonContainer>
         </>
     )
 }

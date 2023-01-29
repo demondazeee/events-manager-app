@@ -1,3 +1,4 @@
+import { useRouter } from "next/router"
 import { useContext } from "react"
 import styled from "styled-components"
 import { useFetchEvents } from "../../hooks/Events/useFetchEvents"
@@ -6,6 +7,7 @@ import { CategoryDataBody } from "../../types/category"
 import { LI } from "../elements/Lists"
 import { P } from "../elements/Typography"
 import { Card } from "../layouts/Card"
+import Link from 'next/link'
 
 const CategoryItemContainer = styled(Card)`
     box-shadow: none;
@@ -29,21 +31,25 @@ const CategoryItemContainer = styled(Card)`
 
 const CategoryItem = ({id, name}: CategoryDataBody) => {
     const event = useContext(eventContext)
-    const {data, isLoading, refetch} = useFetchEvents(name, undefined, false)
+    const router = useRouter()
+    // const {data, isLoading, refetch} = useFetchEvents(name, undefined, false)
     if(event == null) {return <P>Loading..</P>}
     
     
-    if(data == null) {return <P>Loading..</P>}
-    if(isLoading) {return <P>Loading...</P>}
+    // if(data == null) {return <P>Loading..</P>}
+    // if(isLoading) {return <P>Loading...</P>}
 
 
     return ( 
         <LI onClick={() => {
-            refetch()
+            // refetch()
         }}>
-            <CategoryItemContainer>
-                <P>{name}</P>
-            </CategoryItemContainer>
+            
+           <Link href={`/events?category=${name}`}>
+                <CategoryItemContainer>
+                    <P>{name}</P>
+                </CategoryItemContainer>
+           </Link>
         </LI>
     )
 }

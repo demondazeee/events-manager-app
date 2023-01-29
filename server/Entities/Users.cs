@@ -29,6 +29,8 @@ public class Users
 
     [Required]
     public UserRole Role { get; set; }
+    
+    public DateTime CreatedAt { get; set; }
 
     public ICollection<Events> Events { get; set; } = new List<Events>();
 
